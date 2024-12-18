@@ -24,7 +24,6 @@ namespace WebApi.DAL
 		public virtual DbSet<RoleGroup> RoleGroups { get; set; }
 
 		public virtual DbSet<UserLogin> UserLogins { get; set; }
-		public virtual DbSet<Book> Books { get; set; }
 		public virtual DbSet<Category> Categories { get; set; }
 		public virtual DbSet<Product> Products { get; set; }
 
@@ -36,27 +35,16 @@ namespace WebApi.DAL
 
 		private static LambdaExpression GenerateQueryFilterLambda(Type entityType)
 		{
-			// Tham số đại diện cho thực thể: "w =>"
 			var parameter = Expression.Parameter(entityType, "w");
 
-			// Truy cập thuộc tính IsDeleted: "w.IsDeleted"
 			var propertyAccess = Expression.PropertyOrField(parameter, nameof(ISoftDelete.IsDeleted));
 
-			// Biểu thức so sánh: "w.IsDeleted == false"
 			var equalExpression = Expression.Equal(propertyAccess, Expression.Constant(false));
 
-			// Tạo Lambda Expression: "w => w.IsDeleted == false"
 			return Expression.Lambda(equalExpression, parameter);
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-			modelBuilder.Entity<Book>(entity =>
-			{
-				entity.HasKey(e => e.Id).HasName("PK__Book__3214EC07534DB846");
-
-				entity.ToTable("Book");
-			});
 
 			modelBuilder.Entity<RoleGroup>(entity =>
 			{
