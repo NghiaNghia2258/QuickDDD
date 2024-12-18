@@ -16,4 +16,7 @@ public class Category : EntityBase<int>, IAuditableEntity
 	public DateTime? DeletedAt { get ; set ; }
 	public string? DeletedBy { get ; set ; }
 	public string? DeletedName { get ; set ; }
+
+	public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+
 }
