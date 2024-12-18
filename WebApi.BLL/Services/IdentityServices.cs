@@ -19,7 +19,7 @@ public class IdentityServices : IAuthService, IAuthoziService
 
 	public async Task<PayloadToken> SignIn(ParamasSignInRequest paramas)
 	{
-		Userlogin userlogin = await _authenRepository.SignIn(paramas);
+		UserLogin userlogin = await _authenRepository.SignIn(paramas);
 		if (userlogin.Username == null) {
 			return new PayloadToken();
 		}

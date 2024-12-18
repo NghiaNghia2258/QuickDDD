@@ -3,7 +3,7 @@ using WebApi.Domain.Abstractions.Model;
 
 namespace WebApi.Domain.Models
 {
-	public class Userlogin : EntityBase<int>, ISoftDelete
+	public class UserLogin : EntityBase<int>, ISoftDelete
 	{
 		public string Username { get; set; }
 		public string Password { get; set; }

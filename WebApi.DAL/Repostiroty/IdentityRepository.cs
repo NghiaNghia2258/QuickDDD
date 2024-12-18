@@ -6,7 +6,7 @@ using WebApi.Shared.Mapper.Identity;
 
 namespace WebApi.DAL.Repostiroty
 {
-	public class IdentityRepository :RepositoryBase<Userlogin,int>, IAuthoziRepository, IAuthenRepository
+	public class IdentityRepository :RepositoryBase<UserLogin,int>, IAuthoziRepository, IAuthenRepository
 	{
 		public IdentityRepository(AppDbContext dbContext) : base(dbContext)
 		{
@@ -17,23 +17,25 @@ namespace WebApi.DAL.Repostiroty
 			throw new NotImplementedException();
 		}
 
-		public async Task<Userlogin> SignIn(ParamasSignInRequest model)
+		public async Task<UserLogin> SignIn(ParamasSignInRequest model)
 		{
-			Userlogin? userlogin = await _dbContext.UserLogins
+			UserLogin? UserLogin = await _dbContext.UserLogins
 				.Include(x => x.RoleGroup)
 				.ThenInclude(x => x.Roles)
 				.Where(x => x.Username == model.Username && x.Password == model.Password)
-				.Select(x => new Userlogin()
+				.Select(x => new UserLogin()
 				{
 					Username = x.Username,
+					RoleGroupId = x.RoleGroupId,
+					RoleGroup = x.RoleGroup
 				}).FirstOrDefaultAsync();
 				;
-			return userlogin ?? new Userlogin();
+			return UserLogin ?? new UserLogin();
 		}
 
 		public async Task<bool> SignUp(ParamasSignUpRequest model)
 		{
-			Userlogin newUser = new Userlogin() { 
+			UserLogin newUser = new UserLogin() { 
 				Username= model.Username,
 				Password = model.Password,
 				RoleGroupId = model.RoleGroupId,

@@ -5,7 +5,7 @@ namespace WebApi.Domain.Abstractions.Repository.Identity
 {
 	public interface IAuthenRepository
 	{
-		Task<Userlogin> SignIn(ParamasSignInRequest model);
+		Task<UserLogin> SignIn(ParamasSignInRequest model);
 		Task<bool> SignUp(ParamasSignUpRequest model);
 	}
 }

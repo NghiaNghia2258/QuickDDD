@@ -23,7 +23,7 @@ namespace WebApi.DAL
 
 		public virtual DbSet<RoleGroup> RoleGroups { get; set; }
 
-		public virtual DbSet<Userlogin> UserLogins { get; set; }
+		public virtual DbSet<UserLogin> UserLogins { get; set; }
 		public virtual DbSet<Book> Books { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -49,12 +49,35 @@ namespace WebApi.DAL
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<Book>(entity =>
-            {
-                entity.HasKey(e => e.Id).HasName("PK__Book__3214EC07534DB846");
+			modelBuilder.Entity<Book>(entity =>
+			{
+				entity.HasKey(e => e.Id).HasName("PK__Book__3214EC07534DB846");
 
-                entity.ToTable("Book");
-            });
+				entity.ToTable("Book");
+			});
+
+			modelBuilder.Entity<RoleGroup>(entity =>
+			{
+				entity.HasMany(d => d.Roles).WithMany(p => p.RoleGroups)
+					.UsingEntity<Dictionary<string, object>>(
+						"RoleRoleGroup",
+						r => r.HasOne<Role>().WithMany().HasForeignKey("RolesId"),
+						l => l.HasOne<RoleGroup>().WithMany().HasForeignKey("RoleGroupsId"),
+						j =>
+						{
+							j.HasKey("RoleGroupsId", "RolesId");
+							j.ToTable("RoleRoleGroup");
+							j.HasIndex(new[] { "RolesId" }, "IX_RoleRoleGroup_RolesId");
+						});
+			});
+
+			modelBuilder.Entity<UserLogin>(entity =>
+			{
+				entity.HasIndex(e => e.RoleGroupId, "IX_UserLogins_RoleGroupId");
+
+				entity.HasOne(d => d.RoleGroup).WithMany(p => p.UserLogins).HasForeignKey(d => d.RoleGroupId);
+			});
+
 			var softDeleteEntities = typeof(ISoftDelete).Assembly.GetTypes()
 	        .Where(type => typeof(ISoftDelete).IsAssignableFrom(type)
 		        && type.IsClass

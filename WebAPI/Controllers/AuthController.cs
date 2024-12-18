@@ -34,6 +34,7 @@ namespace WebAPI.Controllers
 					AccessToken = JwtTokenHelper.GenerateJwtToken(token,_configuration),
 					RefreshToken = JwtTokenHelper.GenerateJwtToken(token, _configuration)
 				};
+				res = new ApiSuccessResult<TokenLogin>(tokenLogin);
 			}
 			else
 			{
