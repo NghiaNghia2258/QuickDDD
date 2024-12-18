@@ -1,4 +1,4 @@
-﻿namespace WebApi.BLL.Mapper.Identity;
+﻿namespace WebApi.Shared.Mapper.Identity;
 
 public class ParamasSignInRequest
 {

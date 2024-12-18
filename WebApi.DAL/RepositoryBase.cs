@@ -38,7 +38,7 @@ namespace WebApi.DAL
             _dbContext.Entry(exist).CurrentValues.SetValues(update);
             await _dbContext.SaveChangesAsync();
         }
-        public async Task<TKey> CreateAsync(T entity, PayloadToken payloadToken)
+        public async Task<TKey> CreateAsync(T entity, PayloadToken? payloadToken = null)
         {
             T? exist = _dbContext.Set<T>().Find(entity.Id);
             if (exist != null) { throw new RecordAlreadyExistsException(); }

@@ -4,6 +4,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WebApi.DAL;
 using WebApi.BLL.Mapper;
+using WebApi.BLL.Interfaces;
+using WebApi.BLL.Services;
+using WebApi.Domain.Abstractions.Repository.Identity;
+using WebApi.DAL.Repostiroty;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +37,10 @@ builder.Services.AddAuthentication(ops =>
     };
 });
 
+builder.Services.AddScoped<IAuthService, IdentityServices>();
+builder.Services.AddScoped<IAuthoziService, IdentityServices>();
+builder.Services.AddScoped<IAuthenRepository, IdentityRepository>();
+builder.Services.AddScoped<IAuthoziRepository, IdentityRepository>();
 
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

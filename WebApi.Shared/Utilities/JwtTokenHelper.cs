@@ -22,7 +22,7 @@ public static class JwtTokenHelper
 
 		var claims = new List<Claim>();
 		claims.Add(new Claim("UserLoginId", payloadToken.UserLoginId.ToString()));
-		claims.Add(new Claim("FullName", payloadToken.FullName));
+		claims.Add(new Claim("FullName", payloadToken.FullName ?? "No name"));
 		foreach (var item in payloadToken.Roles)
 		{
 			claims.Add(new Claim(ClaimTypes.Role, item.Name));
