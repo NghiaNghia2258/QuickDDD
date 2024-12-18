@@ -5,8 +5,8 @@ using WebApi.Domain.Abstractions;
 using WebApi.Domain.Abstractions.Model;
 using WebApi.Domain.Abstractions.RepositoryBase;
 using WebApi.Domain.Const;
-using WebApi.Domain.Exceptions;
-using WebApi.Domain.Mapper.Identity;
+using WebApi.Shared.Exceptions;
+using WebApi.BLL.Mapper.Identity;
 
 namespace WebApi.DAL
 {

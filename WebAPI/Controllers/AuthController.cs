@@ -4,7 +4,7 @@ namespace WebAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class BookController : ControllerBase
+	public class AuthController : ControllerBase
 	{
 		
 	}

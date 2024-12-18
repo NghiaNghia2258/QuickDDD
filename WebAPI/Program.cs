@@ -1,12 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using WebAPI;
-using WebAPI.Models;
-using WebAPI.Services;
-using WebAPI.Services.Interface;
+using WebApi.DAL;
+using WebApi.BLL.Mapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +33,6 @@ builder.Services.AddAuthentication(ops =>
     };
 });
 
-builder.Services.AddScoped<IBookSer,BookSer>();
 
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

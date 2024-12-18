@@ -23,7 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repository\" />
+    <ProjectReference Include="..\WebApi.DAL\WebApi.DAL.csproj" />
+    <ProjectReference Include="..\WebApi.Domain\WebApi.Domain.csproj" />
+    <ProjectReference Include="..\WebApi.Shared\WebApi.Shared.csproj" />
   </ItemGroup>
 
 </Project>

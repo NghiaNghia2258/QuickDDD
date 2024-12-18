@@ -11,12 +11,12 @@
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0" />
-
-		  <Folder Include="Repostiroty\" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WebApi.BLL\WebApi.BLL.csproj" />
     <ProjectReference Include="..\WebApi.Domain\WebApi.Domain.csproj" />
+    <ProjectReference Include="..\WebApi.Shared\WebApi.Shared.csproj" />
   </ItemGroup>
 
 </Project>
