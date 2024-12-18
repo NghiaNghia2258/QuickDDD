@@ -6,21 +6,19 @@ using WebApi.Domain.Abstractions.Model;
 using WebApi.Domain.Abstractions.RepositoryBase;
 using WebApi.Domain.Const;
 using WebApi.Shared.Exceptions;
-using WebApi.BLL.Mapper.Identity;
+using WebApi.Shared.Models;
 
 namespace WebApi.DAL
 {
-    public class RepositoryBase<T,TKey>: IRepositoryBase<T,TKey> where T : EntityBase<TKey>
-    {
-        protected readonly IUnitOfWork _unitOfWork;
-        protected readonly IMapper _mapper;
+	public abstract class RepositoryBase<T,TKey>: IRepositoryBase<T,TKey> where T : EntityBase<TKey>
+    { 
+       
         protected readonly AppDbContext _dbContext;
-        protected RepositoryBase(IUnitOfWork unitOfWork, IMapper mapper)
+        protected RepositoryBase(AppDbContext dbContext)
         {
-            _dbContext = unitOfWork.GetDbContext() as AppDbContext ?? throw new ArgumentNullException(nameof(unitOfWork));
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
+			_dbContext = dbContext;
+
+		}
         public async Task UpdateAsync(T update, PayloadToken payloadToken)
         {
             if (_dbContext.Entry(update).State == EntityState.Unchanged) return;
