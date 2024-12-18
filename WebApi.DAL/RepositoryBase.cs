@@ -45,7 +45,7 @@ namespace WebApi.DAL
             if (entity is ICreateTracking createTracking)
             {
                 createTracking.CreatedAt = TimeConst.Now;
-                createTracking.CreatedBy = payloadToken.Username;
+                createTracking.CreatedBy = payloadToken.UserLoginId.ToString();
                 createTracking.CreatedName = payloadToken.FullName;
             }
             await _dbContext.Set<T>().AddAsync(entity);

@@ -25,6 +25,7 @@ namespace WebApi.DAL.Repostiroty
 				.Where(x => x.Username == model.Username && x.Password == model.Password)
 				.Select(x => new UserLogin()
 				{
+					Id = x.Id,
 					Username = x.Username,
 					RoleGroupId = x.RoleGroupId,
 					RoleGroup = x.RoleGroup

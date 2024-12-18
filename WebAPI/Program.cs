@@ -9,6 +9,8 @@ using WebApi.BLL.Services;
 using WebApi.Domain.Abstractions.Repository.Identity;
 using WebApi.DAL.Repostiroty;
 using WebApi.Domain.Abstractions;
+using Microsoft.OpenApi.Models;
+using WebApi.Domain.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options => 
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 	);
+
 
 builder.Services.AddAuthentication(ops =>
 {
@@ -37,6 +40,45 @@ builder.Services.AddAuthentication(ops =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("AVERYTOPSECRET123^%$"))
     };
 });
+builder.Services.AddSwaggerGen(c =>
+{
+	c.SwaggerDoc("v1",
+		new OpenApiInfo
+		{
+			Title = "Fashion API V1",
+			Version = "V1"
+		});
+
+	c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+	{
+		In = ParameterLocation.Header,
+		Description = "Enter your token",
+		Name = "Authorization",
+		Type = SecuritySchemeType.Http,
+		BearerFormat = "JWT",
+		Scheme = "Bearer",
+	});
+	c.AddSecurityRequirement(new OpenApiSecurityRequirement
+			{
+				{
+					new OpenApiSecurityScheme
+					{
+						Reference = new OpenApiReference
+						{
+							Type = ReferenceType.SecurityScheme,
+							Id = "Bearer"
+						},
+						Name = "Bearer"
+					},
+					new List<string>
+					{
+                        "microservices_api.read",
+                        "microservices_api.write"
+                    }
+				}
+			});
+});
+
 
 builder.Services.AddScoped<IAuthService, IdentityServices>();
 builder.Services.AddScoped<IAuthoziService, IdentityServices>();
@@ -62,6 +104,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseMiddleware<ErrorWrappingMiddleware>();
 
 app.MapControllers();
 
