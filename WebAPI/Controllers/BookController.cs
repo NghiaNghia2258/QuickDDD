@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApi.BLL.Interfaces;
 
 namespace WebAPI.Controllers
 {
@@ -6,6 +7,11 @@ namespace WebAPI.Controllers
 	[ApiController]
 	public class BookController : ControllerBase
 	{
-		
+		private readonly IBookService _bookService;
+
+		public BookController(IBookService bookService)
+		{
+			_bookService = bookService;
+		}
 	}
 }

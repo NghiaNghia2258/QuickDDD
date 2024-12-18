@@ -1,14 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using WebApi.DAL.Repostiroty;
 using WebApi.Domain.Abstractions;
+using WebApi.Domain.Abstractions.Repository;
 
 namespace WebApi.DAL;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly DbContext _dbContext;
+    private readonly AppDbContext _dbContext;
 
-    public UnitOfWork(DbContext dbContext)
+    private readonly IBookRepository _bookRepository;
+
+	public IBookRepository BookRepository => _bookRepository ?? new BookRepository(_dbContext);
+
+	public UnitOfWork(AppDbContext dbContext)
     {
         _dbContext = dbContext;
     }

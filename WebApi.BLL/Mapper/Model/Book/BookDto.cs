@@ -1,6 +1,10 @@
 ﻿namespace WebApi.BLL.Mapper.Model.Book
 {
-	internal class BookDto
+	public class BookDto
 	{
+		public static int TotalRecordsCount { get; set; }
+
+		public int Id { get; set; }
+		public string Title { get; set; }
 	}
 }

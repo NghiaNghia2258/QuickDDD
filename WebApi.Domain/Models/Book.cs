@@ -3,7 +3,7 @@ using WebApi.Domain.Abstractions.Model;
 
 namespace WebApi.Domain.Models;
 
-public partial class Book: EntityBase<int>, IAuditableEntity
+public class Book: EntityBase<int>, IAuditableEntity
 {
     public string Title { get; set; }
 	public DateTime CreatedAt { get ; set ; }
