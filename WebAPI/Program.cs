@@ -8,6 +8,7 @@ using WebApi.BLL.Interfaces;
 using WebApi.BLL.Services;
 using WebApi.Domain.Abstractions.Repository.Identity;
 using WebApi.DAL.Repostiroty;
+using WebApi.Domain.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,8 @@ builder.Services.AddScoped<IAuthService, IdentityServices>();
 builder.Services.AddScoped<IAuthoziService, IdentityServices>();
 builder.Services.AddScoped<IAuthenRepository, IdentityRepository>();
 builder.Services.AddScoped<IAuthoziRepository, IdentityRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

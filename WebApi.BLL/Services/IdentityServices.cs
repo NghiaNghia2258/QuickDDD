@@ -1,4 +1,6 @@
-﻿using WebApi.BLL.Interfaces;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using WebApi.BLL.Interfaces;
 using WebApi.Domain.Abstractions.Repository.Identity;
 using WebApi.Domain.Models;
 using WebApi.Shared.Mapper.Identity;
@@ -10,6 +12,8 @@ public class IdentityServices : IAuthService, IAuthoziService
 {
 	private readonly IAuthenRepository _authenRepository;
 	private readonly IAuthoziRepository _authoziRepository ;
+	protected readonly IConfiguration _config;
+
 
 	public IdentityServices(IAuthenRepository authenRepository, IAuthoziRepository authoziRepository)
 	{
@@ -42,5 +46,10 @@ public class IdentityServices : IAuthService, IAuthoziService
 	{
 		bool isSignUpSuccess = await _authenRepository.SignUp(paramas);
 		return isSignUpSuccess;
+	}
+
+	public async Task IsAuthozi(HttpContext httpContext, string role = "")
+	{
+
 	}
 }

@@ -7,6 +7,7 @@ namespace WebApi.Domain.Abstractions
 	public interface IUnitOfWork: IDisposable
 	{
 		public IBookRepository BookRepository{ get;}
+		public ICategoryRepository CategoryRepository{ get;}
 
 		Task<IDbContextTransaction> BeginTransactionAsync();
 		Task CommitAsync();

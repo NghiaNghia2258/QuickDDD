@@ -11,8 +11,10 @@ public class UnitOfWork : IUnitOfWork
     private readonly AppDbContext _dbContext;
 
     private readonly IBookRepository _bookRepository;
+    private readonly ICategoryRepository _categoryRepository;
 
 	public IBookRepository BookRepository => _bookRepository ?? new BookRepository(_dbContext);
+	public ICategoryRepository CategoryRepository => _categoryRepository ?? new CategoryRepository(_dbContext);
 
 	public UnitOfWork(AppDbContext dbContext)
     {
@@ -42,6 +44,6 @@ public class UnitOfWork : IUnitOfWork
 
     public void Dispose()
     {
-        throw new NotImplementedException();
+       
     }
 }
