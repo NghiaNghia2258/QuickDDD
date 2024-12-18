@@ -12,9 +12,17 @@ namespace WebApi.DAL.Repostiroty
 		{
 		}
 
-		public Task<bool> IsAuthozi(HttpContext httpContext, string? role = null)
+		public async Task<bool> IsAuthozi(int userLoginId, string? role = null)
 		{
-			throw new NotImplementedException();
+			UserLogin? UserLogin = await _dbContext.UserLogins
+				.Include(x => x.RoleGroup)
+				.ThenInclude(x => x.Roles.Where(y => y.Name == role))
+				.Where(x => x.Id == userLoginId)
+				.Select(x => new UserLogin()
+				{
+					RoleGroup = x.RoleGroup
+				}).FirstOrDefaultAsync();
+			return UserLogin.RoleGroup.Roles.Count > 0;
 		}
 
 		public async Task<UserLogin> SignIn(ParamasSignInRequest model)

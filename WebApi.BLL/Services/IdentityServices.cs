@@ -3,8 +3,10 @@ using Microsoft.Extensions.Configuration;
 using WebApi.BLL.Interfaces;
 using WebApi.Domain.Abstractions.Repository.Identity;
 using WebApi.Domain.Models;
+using WebApi.Shared.Exceptions;
 using WebApi.Shared.Mapper.Identity;
 using WebApi.Shared.Models;
+using WebApi.Shared.Utilities;
 
 namespace WebApi.BLL.Services;
 
@@ -15,10 +17,11 @@ public class IdentityServices : IAuthService, IAuthoziService
 	protected readonly IConfiguration _config;
 
 
-	public IdentityServices(IAuthenRepository authenRepository, IAuthoziRepository authoziRepository)
+	public IdentityServices(IAuthenRepository authenRepository, IAuthoziRepository authoziRepository, IConfiguration config)
 	{
 		_authenRepository = authenRepository;
 		_authoziRepository = authoziRepository;
+		_config = config;
 	}
 
 	public async Task<PayloadToken> SignIn(ParamasSignInRequest paramas)
@@ -51,6 +54,11 @@ public class IdentityServices : IAuthService, IAuthoziService
 
 	public async Task IsAuthozi(HttpContext httpContext, string role = "")
 	{
-
+		PayloadToken payload = JwtTokenHelper.GetPayloadToken(httpContext, _config);
+		bool isAuthozi = await _authoziRepository.IsAuthozi(payload.UserLoginId,role);
+		if(!isAuthozi)
+		{
+			throw new AuthoziException("Xác thực token thất bại vui lòng đọc file readme.md để biết thêm chi tiết về model phân quyền");
+		}
 	}
 }
