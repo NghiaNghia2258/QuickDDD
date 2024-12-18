@@ -1,4 +1,4 @@
-﻿namespace WebAPI.Models;
+﻿namespace WebApi.Domain.Models;
 
 public partial class Book
 {
