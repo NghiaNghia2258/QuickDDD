@@ -13,9 +13,6 @@ public class UnitOfWork : IUnitOfWork
     private readonly ICategoryRepository _categoryRepository;
     private readonly IProductRepository _productRepository;
 
-	public ICategoryRepository CategoryRepository => _categoryRepository ?? new CategoryRepository(_dbContext);
-	public IProductRepository ProductRepository => _productRepository ?? new ProductRepository(_dbContext);
-
 	public UnitOfWork(AppDbContext dbContext)
     {
         _dbContext = dbContext;

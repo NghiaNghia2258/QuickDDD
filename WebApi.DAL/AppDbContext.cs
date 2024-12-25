@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Reflection.Metadata;
+using WebApi.DAL.Data;
 using WebApi.Domain.Abstractions.Model;
 using WebApi.Domain.Models;
 
@@ -24,12 +23,14 @@ namespace WebApi.DAL
 		public virtual DbSet<RoleGroup> RoleGroups { get; set; }
 
 		public virtual DbSet<UserLogin> UserLogins { get; set; }
-		public virtual DbSet<Category> Categories { get; set; }
-		public virtual DbSet<Product> Products { get; set; }
+
+        public DbSet<Quiz> Quizzes { get; set; } = null!;
+        public DbSet<Question> Questions { get; set; } = null!;
+        public DbSet<Answer> Answers { get; set; } = null!;
+        public DbSet<Subject> Subjects { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-            => optionsBuilder.UseSqlServer("Data Source=DESKTOP-LEDG467\\SQLEXPRESS;Initial Catalog=AppDB;Integrated Security=True;Trust Server Certificate=True");
+            => optionsBuilder.UseSqlServer("Data Source=DESKTOP-BOC9JRS\\SQLEXPRESS;Initial Catalog=AppDb;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
 
 
 
@@ -45,7 +46,7 @@ namespace WebApi.DAL
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+			SeedData.Seed(modelBuilder);
 			modelBuilder.Entity<RoleGroup>(entity =>
 			{
 				entity.HasMany(d => d.Roles).WithMany(p => p.RoleGroups)
