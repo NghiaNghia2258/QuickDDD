@@ -6,6 +6,7 @@ namespace WebApi.Domain.Abstractions
 {
 	public interface IUnitOfWork: IDisposable
 	{
+		public IQuizRepository QuizRepository { get; }
 		Task<IDbContextTransaction> BeginTransactionAsync();
 		Task CommitAsync();
 		Task EndTransactionAsync();

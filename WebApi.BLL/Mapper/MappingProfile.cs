@@ -1,21 +1,20 @@
 ﻿using AutoMapper;
-using WebApi.BLL.Mapper.Model.Category;
-using WebApi.BLL.Mapper.Model.Product;
+using WebApi.BLL.Mapper.Model.Quiz;
 using WebApi.Domain.Models;
 
 namespace WebApi.BLL.Mapper
 {
-	public class MappingProfile : Profile
-	{
-		public MappingProfile()
-		{
-			CreateMap<Category,CategoryDto>().ReverseMap();
-			CreateMap<CreateCategoryDto,Category>();
-			CreateMap<Category,CategoryGetAllDto>();
-			
-			CreateMap<Product,ProductDto>().ReverseMap();
-			CreateMap<CreateProductDto,Product>();
-			CreateMap<Product,ProductGetAllDto>();
-		}
-	}
+    public class MappingProfile : Profile
+    {
+        public MappingProfile()
+        {
+            CreateMap<Quiz, QuizDto>()
+                .ForMember(dest => dest.SubjectName, opt => opt.MapFrom(src => src.Subject.Name)) 
+                .ReverseMap();
+
+            CreateMap<CreateQuizDto, Quiz>();
+            CreateMap<Quiz, QuizGetAllDto>()
+                .ForMember(dest => dest.SubjectName, opt => opt.MapFrom(src => src.Subject.Name));
+        }
+    }
 }

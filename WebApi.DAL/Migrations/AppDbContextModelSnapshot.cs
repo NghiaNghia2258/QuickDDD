@@ -44,13 +44,23 @@ namespace WebApi.DAL.Migrations
                         },
                         new
                         {
-                            RoleGroupsId = 2,
+                            RoleGroupsId = 1,
                             RolesId = 2
                         },
                         new
                         {
-                            RoleGroupsId = 3,
+                            RoleGroupsId = 1,
                             RolesId = 3
+                        },
+                        new
+                        {
+                            RoleGroupsId = 1,
+                            RolesId = 4
+                        },
+                        new
+                        {
+                            RoleGroupsId = 2,
+                            RolesId = 4
                         });
                 });
 
@@ -72,126 +82,14 @@ namespace WebApi.DAL.Migrations
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("QuestionId");
 
                     b.ToTable("Answers");
-                });
-
-            modelBuilder.Entity("WebApi.Domain.Models.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DeletedName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UpdatedName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Category");
-                });
-
-            modelBuilder.Entity("WebApi.Domain.Models.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DeletedName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UpdatedName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("WebApi.Domain.Models.Question", b =>
@@ -207,6 +105,9 @@ namespace WebApi.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("QuizId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Version")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -237,11 +138,43 @@ namespace WebApi.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("SubjectId");
 
                     b.ToTable("Quizzes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "A quiz on basic mathematics",
+                            Duration = 30,
+                            SubjectId = 1,
+                            Title = "Basic Math",
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Basic physics quiz",
+                            Duration = 45,
+                            SubjectId = 2,
+                            Title = "Physics Basics",
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "A quiz on World War II",
+                            Duration = 60,
+                            SubjectId = 3,
+                            Title = "World War II",
+                            Version = 0
+                        });
                 });
 
             modelBuilder.Entity("WebApi.Domain.Models.Role", b =>
@@ -267,19 +200,25 @@ namespace WebApi.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Admin",
+                            Name = "CREATE_QUIZ",
                             Version = 0
                         },
                         new
                         {
                             Id = 2,
-                            Name = "User",
+                            Name = "DELETE_QUIZ",
                             Version = 0
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Guest",
+                            Name = "UPDATE_QUIZ",
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "SELECT_QUIZ",
                             Version = 0
                         });
                 });
@@ -307,19 +246,13 @@ namespace WebApi.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Administrator Group",
+                            Name = "Admin",
                             Version = 0
                         },
                         new
                         {
                             Id = 2,
-                            Name = "User Group",
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Guest Group",
+                            Name = "User",
                             Version = 0
                         });
                 });
@@ -339,9 +272,35 @@ namespace WebApi.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Subjects");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Math related quizzes",
+                            Name = "Mathematics",
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Science related quizzes",
+                            Name = "Science",
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "History related quizzes",
+                            Name = "History",
+                            Version = 0
+                        });
                 });
 
             modelBuilder.Entity("WebApi.Domain.Models.UserLogin", b =>
@@ -402,15 +361,6 @@ namespace WebApi.DAL.Migrations
                             RoleGroupId = 2,
                             Username = "user1",
                             Version = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IsDeleted = false,
-                            Password = "guest123",
-                            RoleGroupId = 3,
-                            Username = "guest1",
-                            Version = 0
                         });
                 });
 
@@ -438,17 +388,6 @@ namespace WebApi.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Question");
-                });
-
-            modelBuilder.Entity("WebApi.Domain.Models.Product", b =>
-                {
-                    b.HasOne("WebApi.Domain.Models.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("WebApi.Domain.Models.Question", b =>
@@ -482,11 +421,6 @@ namespace WebApi.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("RoleGroup");
-                });
-
-            modelBuilder.Entity("WebApi.Domain.Models.Category", b =>
-                {
-                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("WebApi.Domain.Models.Question", b =>

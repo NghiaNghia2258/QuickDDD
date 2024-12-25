@@ -10,10 +10,11 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly AppDbContext _dbContext;
 
-    private readonly ICategoryRepository _categoryRepository;
-    private readonly IProductRepository _productRepository;
+    private readonly IQuizRepository _quizRepository;
 
-	public UnitOfWork(AppDbContext dbContext)
+    public IQuizRepository QuizRepository => _quizRepository ?? new QuizRepository(_dbContext);
+
+    public UnitOfWork(AppDbContext dbContext)
     {
         _dbContext = dbContext;
     }

@@ -1,8 +1,9 @@
-﻿namespace WebApi.Domain.Models
+﻿using WebApi.Domain.Abstractions;
+
+namespace WebApi.Domain.Models
 {
-    public class Quiz
+    public class Quiz: EntityBase<int>
     {
-        public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string? Description { get; set; }
         public int Duration { get; set; }

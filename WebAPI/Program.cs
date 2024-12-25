@@ -84,6 +84,7 @@ builder.Services.AddScoped<IAuthService, IdentityServices>();
 builder.Services.AddScoped<IAuthoziService, IdentityServices>();
 builder.Services.AddScoped<IAuthenRepository, IdentityRepository>();
 builder.Services.AddScoped<IAuthoziRepository, IdentityRepository>();
+builder.Services.AddScoped<IQuizService, QuizService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));

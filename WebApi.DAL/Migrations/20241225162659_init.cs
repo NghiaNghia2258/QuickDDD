@@ -14,30 +14,6 @@ namespace WebApi.DAL.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Category",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdatedName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DeletedName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Version = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Category", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "RoleGroups",
                 columns: table => new
                 {
@@ -66,36 +42,18 @@ namespace WebApi.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Product",
+                name: "Subjects",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdatedName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DeletedName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Version = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Product", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Product_Category_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Category",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_Subjects", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -148,14 +106,79 @@ namespace WebApi.DAL.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Quizzes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Duration = table.Column<int>(type: "int", nullable: false),
+                    SubjectId = table.Column<int>(type: "int", nullable: false),
+                    Version = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Quizzes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Quizzes_Subjects_SubjectId",
+                        column: x => x.SubjectId,
+                        principalTable: "Subjects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Questions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    QuizId = table.Column<int>(type: "int", nullable: false),
+                    Version = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Questions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Questions_Quizzes_QuizId",
+                        column: x => x.QuizId,
+                        principalTable: "Quizzes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Answers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsCorrect = table.Column<bool>(type: "bit", nullable: false),
+                    QuestionId = table.Column<int>(type: "int", nullable: false),
+                    Version = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Answers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Answers_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Questions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "RoleGroups",
                 columns: new[] { "Id", "Name", "Version" },
                 values: new object[,]
                 {
-                    { 1, "Administrator Group", 0 },
-                    { 2, "User Group", 0 },
-                    { 3, "Guest Group", 0 }
+                    { 1, "Admin", 0 },
+                    { 2, "User", 0 }
                 });
 
             migrationBuilder.InsertData(
@@ -163,9 +186,30 @@ namespace WebApi.DAL.Migrations
                 columns: new[] { "Id", "Name", "Version" },
                 values: new object[,]
                 {
-                    { 1, "Admin", 0 },
-                    { 2, "User", 0 },
-                    { 3, "Guest", 0 }
+                    { 1, "CREATE_QUIZ", 0 },
+                    { 2, "DELETE_QUIZ", 0 },
+                    { 3, "UPDATE_QUIZ", 0 },
+                    { 4, "SELECT_QUIZ", 0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Subjects",
+                columns: new[] { "Id", "Description", "Name", "Version" },
+                values: new object[,]
+                {
+                    { 1, "Math related quizzes", "Mathematics", 0 },
+                    { 2, "Science related quizzes", "Science", 0 },
+                    { 3, "History related quizzes", "History", 0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Quizzes",
+                columns: new[] { "Id", "Description", "Duration", "SubjectId", "Title", "Version" },
+                values: new object[,]
+                {
+                    { 1, "A quiz on basic mathematics", 30, 1, "Basic Math", 0 },
+                    { 2, "Basic physics quiz", 45, 2, "Physics Basics", 0 },
+                    { 3, "A quiz on World War II", 60, 3, "World War II", 0 }
                 });
 
             migrationBuilder.InsertData(
@@ -174,8 +218,10 @@ namespace WebApi.DAL.Migrations
                 values: new object[,]
                 {
                     { 1, 1 },
-                    { 2, 2 },
-                    { 3, 3 }
+                    { 1, 2 },
+                    { 1, 3 },
+                    { 1, 4 },
+                    { 2, 4 }
                 });
 
             migrationBuilder.InsertData(
@@ -184,14 +230,23 @@ namespace WebApi.DAL.Migrations
                 values: new object[,]
                 {
                     { 1, null, null, null, false, "admin123", 1, "admin", 0 },
-                    { 2, null, null, null, false, "user123", 2, "user1", 0 },
-                    { 3, null, null, null, false, "guest123", 3, "guest1", 0 }
+                    { 2, null, null, null, false, "user123", 2, "user1", 0 }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_CategoryId",
-                table: "Product",
-                column: "CategoryId");
+                name: "IX_Answers_QuestionId",
+                table: "Answers",
+                column: "QuestionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Questions_QuizId",
+                table: "Questions",
+                column: "QuizId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Quizzes_SubjectId",
+                table: "Quizzes",
+                column: "SubjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleRoleGroup_RolesId",
@@ -208,7 +263,7 @@ namespace WebApi.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "Answers");
 
             migrationBuilder.DropTable(
                 name: "RoleRoleGroup");
@@ -217,13 +272,19 @@ namespace WebApi.DAL.Migrations
                 name: "UserLogins");
 
             migrationBuilder.DropTable(
-                name: "Category");
+                name: "Questions");
 
             migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "RoleGroups");
+
+            migrationBuilder.DropTable(
+                name: "Quizzes");
+
+            migrationBuilder.DropTable(
+                name: "Subjects");
         }
     }
 }
