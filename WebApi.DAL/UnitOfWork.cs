@@ -11,8 +11,10 @@ public class UnitOfWork : IUnitOfWork
     private readonly AppDbContext _dbContext;
 
     private readonly IQuizRepository _quizRepository;
+    private readonly ISubjectRepository _subjectRepository;
 
     public IQuizRepository QuizRepository => _quizRepository ?? new QuizRepository(_dbContext);
+    public ISubjectRepository SubjectRepository => _subjectRepository ?? new SubjectRepository(_dbContext);
 
     public UnitOfWork(AppDbContext dbContext)
     {

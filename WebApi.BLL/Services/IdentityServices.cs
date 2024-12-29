@@ -55,6 +55,10 @@ public class IdentityServices : IAuthService, IAuthoziService
 	public async Task IsAuthozi(HttpContext httpContext, string role = "")
 	{
 		PayloadToken payload = JwtTokenHelper.GetPayloadToken(httpContext, _config);
+		if(string.IsNullOrEmpty(role) && payload != null)
+		{
+			return;
+		}
 		bool isAuthozi = await _authoziRepository.IsAuthozi(payload.UserLoginId,role);
 		if(!isAuthozi)
 		{

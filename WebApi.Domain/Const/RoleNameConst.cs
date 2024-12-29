@@ -16,5 +16,8 @@
         public readonly static string DELETE_QUIZ = "DELETE_QUIZ";
         public readonly static string UPDATE_QUIZ = "UPDATE_QUIZ";
         public readonly static string SELECT_QUIZ = "SELECT_QUIZ";
+
+        public readonly static string SELECT_SUBJECT = "SELECT_SUBJECT";
+
     }
 }

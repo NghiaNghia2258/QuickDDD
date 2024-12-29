@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using WebApi.BLL.Mapper.Model.Quiz;
+using WebApi.BLL.Mapper.Model.Subjects;
 using WebApi.Domain.Models;
 
 namespace WebApi.BLL.Mapper
@@ -15,6 +16,9 @@ namespace WebApi.BLL.Mapper
             CreateMap<CreateQuizDto, Quiz>();
             CreateMap<Quiz, QuizGetAllDto>()
                 .ForMember(dest => dest.SubjectName, opt => opt.MapFrom(src => src.Subject.Name));
+
+            CreateMap<Subject, SubjectGetAllDto>().ReverseMap();
+
         }
     }
 }
