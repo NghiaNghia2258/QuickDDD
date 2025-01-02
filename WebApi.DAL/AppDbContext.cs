@@ -24,11 +24,6 @@ namespace WebApi.DAL
 
 		public virtual DbSet<UserLogin> UserLogins { get; set; }
 
-        public DbSet<Quiz> Quizzes { get; set; } = null!;
-        public DbSet<Question> Questions { get; set; } = null!;
-        public DbSet<Answer> Answers { get; set; } = null!;
-        public DbSet<Subject> Subjects { get; set; } = null!;
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=AppDb;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
 

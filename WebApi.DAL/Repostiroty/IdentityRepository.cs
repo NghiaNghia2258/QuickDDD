@@ -1,18 +1,18 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using WebApi.Domain.Abstractions.Repository.Identity;
 using WebApi.Domain.Models;
 using WebApi.Shared.Mapper.Identity;
 
 namespace WebApi.DAL.Repostiroty
 {
-	public class IdentityRepository :RepositoryBase<UserLogin,int>, IAuthoziRepository, IAuthenRepository
+    public class IdentityRepository :RepositoryBase<UserLogin,int>, IAuthoziRepository, IAuthenRepository
 	{
-		public IdentityRepository(AppDbContext dbContext) : base(dbContext)
-		{
-		}
-
-		public async Task<bool> IsAuthozi(int userLoginId, string? role = null)
+        public IdentityRepository(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor, IConfiguration config) : base(dbContext, httpContextAccessor, config)
+        {
+        }
+        public async Task<bool> IsAuthozi(int userLoginId, string? role = null)
 		{
 			UserLogin? UserLogin = await _dbContext.UserLogins
 				.Include(x => x.RoleGroup)

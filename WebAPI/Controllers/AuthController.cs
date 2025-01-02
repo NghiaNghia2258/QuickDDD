@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApi.BLL.Interfaces;
-using WebApi.BLL.Mapper.Model.UserLogin;
 using WebApi.Domain.ApiResult;
 using WebApi.Shared.Mapper.Identity;
 using WebApi.Shared.Models;
@@ -8,7 +7,7 @@ using WebApi.Shared.Utilities;
 
 namespace WebAPI.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class AuthController : ControllerBase
 	{

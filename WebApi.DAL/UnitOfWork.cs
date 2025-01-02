@@ -1,24 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using WebApi.DAL.Repostiroty;
+using Microsoft.Extensions.Configuration;
 using WebApi.Domain.Abstractions;
-using WebApi.Domain.Abstractions.Repository;
 
 namespace WebApi.DAL;
 
 public class UnitOfWork : IUnitOfWork
 {
     private readonly AppDbContext _dbContext;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IConfiguration _config;
 
-    private readonly IQuizRepository _quizRepository;
-    private readonly ISubjectRepository _subjectRepository;
-
-    public IQuizRepository QuizRepository => _quizRepository ?? new QuizRepository(_dbContext);
-    public ISubjectRepository SubjectRepository => _subjectRepository ?? new SubjectRepository(_dbContext);
-
-    public UnitOfWork(AppDbContext dbContext)
+    public UnitOfWork(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor, IConfiguration config)
     {
         _dbContext = dbContext;
+        _httpContextAccessor = httpContextAccessor;
+        _config = config;
     }
     public DbContext GetDbContext()
     {
@@ -44,6 +42,6 @@ public class UnitOfWork : IUnitOfWork
 
     public void Dispose()
     {
-       
+
     }
 }

@@ -20,6 +20,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options => 
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 	);
+builder.Services.AddHttpContextAccessor();
 
 
 builder.Services.AddAuthentication(ops =>
@@ -79,14 +80,11 @@ builder.Services.AddSwaggerGen(c =>
 			});
 });
 
-
-builder.Services.AddScoped<IAuthService, IdentityServices>();
-builder.Services.AddScoped<IAuthoziService, IdentityServices>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthenRepository, IdentityRepository>();
 builder.Services.AddScoped<IAuthoziRepository, IdentityRepository>();
-builder.Services.AddScoped<IQuizService, QuizService>();
-builder.Services.AddScoped<ISubjectService, SubjectService>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IAuthService, IdentityServices>();
+builder.Services.AddScoped<IAuthoziService, IdentityServices>();
 
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -47,26 +47,6 @@ namespace WebApi.DAL.Data
                     new { RoleGroupsId = 1, RolesId = 4 }, // Admin has full permissions
                     new { RoleGroupsId = 2, RolesId = 4 } // User only has SELECT permission
                 ));
-
-            // Define subjects
-            var subjects = new List<Subject>
-            {
-                new Subject { Id = 1, Name = "Mathematics", Description = "Math related quizzes" },
-                new Subject { Id = 2, Name = "Science", Description = "Science related quizzes" },
-                new Subject { Id = 3, Name = "History", Description = "History related quizzes" }
-            };
-
-            modelBuilder.Entity<Subject>().HasData(subjects);
-
-            // Define quizzes
-            var quizzes = new List<Quiz>
-            {
-                new Quiz { Id = 1, Title = "Basic Math", Description = "A quiz on basic mathematics", Duration = 30, SubjectId = 1 },
-                new Quiz { Id = 2, Title = "Physics Basics", Description = "Basic physics quiz", Duration = 45, SubjectId = 2 },
-                new Quiz { Id = 3, Title = "World War II", Description = "A quiz on World War II", Duration = 60, SubjectId = 3 }
-            };
-
-            modelBuilder.Entity<Quiz>().HasData(quizzes);
         }
     }
 }

@@ -15,16 +15,18 @@ public class IdentityServices : IAuthService, IAuthoziService
 	private readonly IAuthenRepository _authenRepository;
 	private readonly IAuthoziRepository _authoziRepository ;
 	protected readonly IConfiguration _config;
+    private IHttpContextAccessor _httpContextAccessor;
 
 
-	public IdentityServices(IAuthenRepository authenRepository, IAuthoziRepository authoziRepository, IConfiguration config)
-	{
-		_authenRepository = authenRepository;
-		_authoziRepository = authoziRepository;
-		_config = config;
-	}
+    public IdentityServices(IAuthenRepository authenRepository, IAuthoziRepository authoziRepository, IConfiguration config, IHttpContextAccessor httpContextAccessor)
+    {
+        _authenRepository = authenRepository;
+        _authoziRepository = authoziRepository;
+        _config = config;
+        _httpContextAccessor = httpContextAccessor;
+    }
 
-	public async Task<PayloadToken> SignIn(ParamasSignInRequest paramas)
+    public async Task<PayloadToken> SignIn(ParamasSignInRequest paramas)
 	{
 		UserLogin userlogin = await _authenRepository.SignIn(paramas);
 		if (userlogin.Username == null) {
@@ -52,9 +54,9 @@ public class IdentityServices : IAuthService, IAuthoziService
 		return isSignUpSuccess;
 	}
 
-	public async Task IsAuthozi(HttpContext httpContext, string role = "")
+	public async Task IsAuthozi(string role = "")
 	{
-		PayloadToken payload = JwtTokenHelper.GetPayloadToken(httpContext, _config);
+		PayloadToken payload = JwtTokenHelper.GetPayloadToken(_httpContextAccessor.HttpContext, _config);
 		if(string.IsNullOrEmpty(role) && payload != null)
 		{
 			return;
@@ -62,7 +64,7 @@ public class IdentityServices : IAuthService, IAuthoziService
 		bool isAuthozi = await _authoziRepository.IsAuthozi(payload.UserLoginId,role);
 		if(!isAuthozi)
 		{
-			throw new AuthoziException("Xác thực token thất bại vui lòng đọc file readme.md để biết thêm chi tiết về model phân quyền");
+			throw new AuthoziException("UnAuthozi");
 		}
 	}
 }
