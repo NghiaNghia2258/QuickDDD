@@ -24,6 +24,15 @@ namespace WebApi.DAL
 
 		public virtual DbSet<UserLogin> UserLogins { get; set; }
 
+
+        public virtual DbSet<Faculty> Faculties { get; set; }
+        public virtual DbSet<Major> Majors { get; set; }
+        public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<StudentFee> StudentFees { get; set; }
+        public virtual DbSet<StudentFeedback> StudentFeedback { get; set; }
+        public virtual DbSet<StudentGrade> StudentGrades { get; set; }
+        public virtual DbSet<Subject> Subjects { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=AppDb;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
 

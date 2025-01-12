@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi.DAL", "WebApi.DAL\We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi.Domain", "WebApi.Domain\WebApi.Domain.csproj", "{8DD4E9F3-39D1-448D-83D4-020397765C4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.Shared", "WebApi.Shared\WebApi.Shared.csproj", "{EC32F091-18FF-43F9-9C2E-5982E6AB341F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi.Shared", "WebApi.Shared\WebApi.Shared.csproj", "{EC32F091-18FF-43F9-9C2E-5982E6AB341F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.BLL", "WebApi.BLL\WebApi.BLL.csproj", "{2FD4CDC2-C6B1-44D4-8639-5DEF0238B350}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi.BLL", "WebApi.BLL\WebApi.BLL.csproj", "{2FD4CDC2-C6B1-44D4-8639-5DEF0238B350}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.BLLTests", "WebApi.BLLTests\WebApi.BLLTests.csproj", "{C8F76439-F6D6-4D9C-86DB-FB9BCC8C9D3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{2FD4CDC2-C6B1-44D4-8639-5DEF0238B350}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FD4CDC2-C6B1-44D4-8639-5DEF0238B350}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FD4CDC2-C6B1-44D4-8639-5DEF0238B350}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8F76439-F6D6-4D9C-86DB-FB9BCC8C9D3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8F76439-F6D6-4D9C-86DB-FB9BCC8C9D3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8F76439-F6D6-4D9C-86DB-FB9BCC8C9D3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8F76439-F6D6-4D9C-86DB-FB9BCC8C9D3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,6 +4,6 @@ namespace WebApi.BLL.Interfaces
 {
 	public interface IAuthoziService
 	{
-		Task IsAuthozi(HttpContext httpContext, string role = "");
+		Task IsAuthozi(string role = "");
 	}
 }
