@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using WebApi.Domain.Abstractions.Repository;
 using WebApi.Domain.Const;
 using WebApi.Domain.Models;
+using WebApi.Domain.ParamsFilter;
 
 namespace WebApi.DAL.Repostiroty;
 
@@ -21,5 +22,24 @@ public class TeacherRepository : RepositoryBase<Teacher, int>, ITeacherRepositor
     {
         int ordinal = await _dbContext.Teachers.CountAsync(x => x.CreatedAt.Year == TimeConst.CurrentYear);
         return 0;
+    }
+    public async Task<List<Teacher>> GetAll(OptionFilterTeacher option)
+    {
+        var query = FindAll().Where(x => option.NameOrCode == null || (x.Code.Contains(option.NameOrCode) || x.FullName.Contains(option.NameOrCode)));
+        return await query.Skip(option.PageSize * (option.PageIndex-1)).Take(option.PageSize).ToListAsync();
+    }
+    public async Task<Teacher> GetById(int id)
+    {
+        return await _dbContext.Teachers.FirstOrDefaultAsync(x => x.Id == id);
+    }
+    public async Task<bool> Delete(int id)
+    {
+        await DeleteAsync(id);
+        return true;
+    }
+    public async Task<bool> Update(Teacher teacher)
+    {
+        await UpdateAsync(teacher);
+        return true;
     }
 }

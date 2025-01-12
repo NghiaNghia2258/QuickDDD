@@ -13,5 +13,7 @@ public class MappingProfile : Profile
         CreateMap<CreateTeacherDto,Teacher>();
         CreateMap<Subject,GetAllSubjectDto>();
         CreateMap<Faculty,GetAllFacultyDto>();
+        CreateMap<Teacher,GetAllTeacherDto>();
+        CreateMap<Teacher,GetByIdTeacherDto>().ReverseMap();
     }
 }
