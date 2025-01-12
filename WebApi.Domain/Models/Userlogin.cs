@@ -15,6 +15,7 @@ namespace WebApi.Domain.Models
 		public string? DeletedName { get; set; }
 
 		public virtual RoleGroup RoleGroup { get; set; } = null!;
+		public virtual ICollection<Teacher> Teachers { get; set; }
 
 	}
 }

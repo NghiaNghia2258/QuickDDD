@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.DAL;
 
@@ -11,9 +12,11 @@ using WebApi.DAL;
 namespace WebApi.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250112150800_init6")]
+    partial class init6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,48 +161,6 @@ namespace WebApi.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Faculties");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Code = "CS",
-                            IsDeleted = false,
-                            Name = "Công nghệ thông tin",
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Code = "EE",
-                            IsDeleted = false,
-                            Name = "Kỹ thuật điện",
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Code = "ME",
-                            IsDeleted = false,
-                            Name = "Cơ khí",
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Code = "CE",
-                            IsDeleted = false,
-                            Name = "Xây dựng",
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Code = "AE",
-                            IsDeleted = false,
-                            Name = "Kỹ thuật môi trường",
-                            Version = 0
-                        });
                 });
 
             modelBuilder.Entity("WebApi.Domain.Models.Major", b =>
@@ -662,50 +623,6 @@ namespace WebApi.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Subjects");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Code = "TCC",
-                            ExerciseCredits = 0,
-                            IsDeleted = false,
-                            IsIncludedInGPA = false,
-                            IsMandatory = false,
-                            Name = "Toán cao cấp",
-                            PracticeCredits = 0,
-                            Semester = 0,
-                            TheoryCredits = 0,
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Code = "VLDC",
-                            ExerciseCredits = 0,
-                            IsDeleted = false,
-                            IsIncludedInGPA = false,
-                            IsMandatory = false,
-                            Name = "Vật lý đại cương",
-                            PracticeCredits = 0,
-                            Semester = 0,
-                            TheoryCredits = 0,
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Code = "OOP",
-                            ExerciseCredits = 0,
-                            IsDeleted = false,
-                            IsIncludedInGPA = false,
-                            IsMandatory = false,
-                            Name = "Lập trình hướng đối tượng",
-                            PracticeCredits = 0,
-                            Semester = 0,
-                            TheoryCredits = 0,
-                            Version = 0
-                        });
                 });
 
             modelBuilder.Entity("WebApi.Domain.Models.Teacher", b =>

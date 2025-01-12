@@ -10,10 +10,7 @@ namespace WebApi.DAL.Data
             // Define roles with specific permissions
             var roles = new List<Role>
             {
-                new Role { Id = 1, Name = "CREATE_QUIZ" },
-                new Role { Id = 2, Name = "DELETE_QUIZ" },
-                new Role { Id = 3, Name = "UPDATE_QUIZ" },
-                new Role { Id = 4, Name = "SELECT_QUIZ" }
+                new Role { Id = 1,Code = "CREATE_TEACHER", Name = "CREATE_TEACHER" },
             };
 
             modelBuilder.Entity<Role>().HasData(roles);
@@ -21,11 +18,22 @@ namespace WebApi.DAL.Data
             // Define role groups
             var roleGroups = new List<RoleGroup>
             {
-                new RoleGroup { Id = 1, Name = "Admin" },
-                new RoleGroup { Id = 2, Name = "User" }
+                new RoleGroup { Id = 1,Code = "ADMIN", Name = "Admin" },
+                new RoleGroup { Id = 3,Code = "TEACHER", Name = "Teacher" },
+                new RoleGroup { Id = 2,Code = "USER", Name = "User" }
             };
 
             modelBuilder.Entity<RoleGroup>().HasData(roleGroups);
+
+            var subjects = new List<Subject>()
+            {
+                new Subject(){Id = 1,Code = "TCC",Name = "Toán cao cấp"},
+                new Subject(){Id = 2,Code = "VLDC", Name = "Vật lý đại cương"},
+                new Subject(){Id = 3,Code = "OOP", Name = "Lập trình hướng đối tượng"},
+            };
+            modelBuilder.Entity<Subject>().HasData(subjects);
+
+       
 
             // Define users and their role groups
             var userLogins = new List<UserLogin>
@@ -47,6 +55,17 @@ namespace WebApi.DAL.Data
                     new { RoleGroupsId = 1, RolesId = 4 }, // Admin has full permissions
                     new { RoleGroupsId = 2, RolesId = 4 } // User only has SELECT permission
                 ));
+
+            var faculties = new List<Faculty>
+            {
+                new Faculty { Id = 1, Code = "CS", Name = "Công nghệ thông tin", IsDeleted = false },
+                new Faculty { Id = 2, Code = "EE", Name = "Kỹ thuật điện", IsDeleted = false },
+                new Faculty { Id = 3, Code = "ME", Name = "Cơ khí", IsDeleted = false },
+                new Faculty { Id = 4, Code = "CE", Name = "Xây dựng", IsDeleted = false },
+                new Faculty { Id = 5, Code = "AE", Name = "Kỹ thuật môi trường", IsDeleted = false }
+            };
+
+            modelBuilder.Entity<Faculty>().HasData(faculties);
         }
     }
 }

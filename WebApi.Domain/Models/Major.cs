@@ -5,6 +5,7 @@ namespace WebApi.Domain.Models;
 
 public class Major : EntityBase<int>, ISoftDelete
 {
+    public string Code { get; set; }
     public string Name { get; set; }
     public int FacultyId { get; set; }
     public bool IsDeleted { get ; set ; }

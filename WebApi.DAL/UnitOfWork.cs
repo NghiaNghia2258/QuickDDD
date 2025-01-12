@@ -2,7 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
+using WebApi.DAL.Repostiroty;
 using WebApi.Domain.Abstractions;
+using WebApi.Domain.Abstractions.Repository;
+using WebApi.Domain.Abstractions.Repository.Identity;
 
 namespace WebApi.DAL;
 
@@ -11,6 +14,15 @@ public class UnitOfWork : IUnitOfWork
     private readonly AppDbContext _dbContext;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IConfiguration _config;
+    private ITeacherRepository _teacherRepository;
+    private IFacultyRepository _facultyRepository;
+    private ISubjectRepository _subjectRepository;
+    private IIdentityRepository _identityRepository;
+
+    public ITeacherRepository Teacher => _teacherRepository ?? new TeacherRepository(_dbContext, _httpContextAccessor, _config);
+    public IFacultyRepository Faculty => _facultyRepository ?? new FacultyRepository(_dbContext, _httpContextAccessor, _config);
+    public ISubjectRepository Subject => _subjectRepository ?? new SubjectRepository(_dbContext,_httpContextAccessor,_config);
+    public IIdentityRepository Identity => _identityRepository ?? new IdentityRepository(_dbContext,_httpContextAccessor,_config);
 
     public UnitOfWork(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor, IConfiguration config)
     {

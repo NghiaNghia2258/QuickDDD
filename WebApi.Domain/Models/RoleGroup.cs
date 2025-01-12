@@ -5,7 +5,8 @@ namespace WebApi.Domain.Models
 {
 	public class RoleGroup : EntityBase<int>
 	{
-		public string Name { get; set; } = null!;
+        public string Code { get; set; }
+        public string Name { get; set; } = null!;
 
 		public virtual ICollection<UserLogin> UserLogins { get; set; } = new List<UserLogin>();
 

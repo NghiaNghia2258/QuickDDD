@@ -7,7 +7,7 @@ using WebApi.Shared.Mapper.Identity;
 
 namespace WebApi.DAL.Repostiroty
 {
-    public class IdentityRepository :RepositoryBase<UserLogin,int>, IAuthoziRepository, IAuthenRepository
+    public class IdentityRepository :RepositoryBase<UserLogin,int>, IIdentityRepository
 	{
         public IdentityRepository(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor, IConfiguration config) : base(dbContext, httpContextAccessor, config)
         {
@@ -51,6 +51,15 @@ namespace WebApi.DAL.Repostiroty
 			};
 			await CreateAsync(newUser);
 			return true;
+		}
+		public async Task<bool> Create(UserLogin userLogin)
+		{
+			await CreateAsync(userLogin);
+			return true;
+		}
+		public async Task<RoleGroup> GetRoleGroupByCode(string code)
+		{
+			return await _dbContext.RoleGroups.FirstOrDefaultAsync(x => x.Code == code);
 		}
 	}
 }

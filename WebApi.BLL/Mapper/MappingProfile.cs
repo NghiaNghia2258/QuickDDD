@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
+using WebApi.BLL.Mapper.Teachers;
+using WebApi.Domain.Models;
 
-namespace WebApi.BLL.Mapper
+namespace WebApi.BLL.Mapper;
+
+public class MappingProfile : Profile
 {
-    public class MappingProfile : Profile
+    public MappingProfile()
     {
-        public MappingProfile()
-        {
-           
-        }
+        CreateMap<CreateTeacherDto,Teacher>();
     }
 }

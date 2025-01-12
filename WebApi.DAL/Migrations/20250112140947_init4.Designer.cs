@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.DAL;
 
@@ -11,9 +12,11 @@ using WebApi.DAL;
 namespace WebApi.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250112140947_init4")]
+    partial class init4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,48 +161,6 @@ namespace WebApi.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Faculties");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Code = "CS",
-                            IsDeleted = false,
-                            Name = "Công nghệ thông tin",
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Code = "EE",
-                            IsDeleted = false,
-                            Name = "Kỹ thuật điện",
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Code = "ME",
-                            IsDeleted = false,
-                            Name = "Cơ khí",
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Code = "CE",
-                            IsDeleted = false,
-                            Name = "Xây dựng",
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Code = "AE",
-                            IsDeleted = false,
-                            Name = "Kỹ thuật môi trường",
-                            Version = 0
-                        });
                 });
 
             modelBuilder.Entity("WebApi.Domain.Models.Major", b =>
@@ -305,13 +266,6 @@ namespace WebApi.DAL.Migrations
                             Id = 1,
                             Code = "ADMIN",
                             Name = "Admin",
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Code = "TEACHER",
-                            Name = "Teacher",
                             Version = 0
                         },
                         new
@@ -662,50 +616,6 @@ namespace WebApi.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Subjects");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Code = "TCC",
-                            ExerciseCredits = 0,
-                            IsDeleted = false,
-                            IsIncludedInGPA = false,
-                            IsMandatory = false,
-                            Name = "Toán cao cấp",
-                            PracticeCredits = 0,
-                            Semester = 0,
-                            TheoryCredits = 0,
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Code = "VLDC",
-                            ExerciseCredits = 0,
-                            IsDeleted = false,
-                            IsIncludedInGPA = false,
-                            IsMandatory = false,
-                            Name = "Vật lý đại cương",
-                            PracticeCredits = 0,
-                            Semester = 0,
-                            TheoryCredits = 0,
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Code = "OOP",
-                            ExerciseCredits = 0,
-                            IsDeleted = false,
-                            IsIncludedInGPA = false,
-                            IsMandatory = false,
-                            Name = "Lập trình hướng đối tượng",
-                            PracticeCredits = 0,
-                            Semester = 0,
-                            TheoryCredits = 0,
-                            Version = 0
-                        });
                 });
 
             modelBuilder.Entity("WebApi.Domain.Models.Teacher", b =>
@@ -770,17 +680,12 @@ namespace WebApi.DAL.Migrations
                     b.Property<string>("UpdatedName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserLoginId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Version")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FacultyId");
-
-                    b.HasIndex("UserLoginId");
 
                     b.ToTable("Teachers");
                 });
@@ -1011,15 +916,7 @@ namespace WebApi.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebApi.Domain.Models.UserLogin", "UserLogin")
-                        .WithMany("Teachers")
-                        .HasForeignKey("UserLoginId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Faculty");
-
-                    b.Navigation("UserLogin");
                 });
 
             modelBuilder.Entity("WebApi.Domain.Models.UserLogin", b =>
@@ -1070,11 +967,6 @@ namespace WebApi.DAL.Migrations
             modelBuilder.Entity("WebApi.Domain.Models.Teacher", b =>
                 {
                     b.Navigation("HomeroomClasses");
-                });
-
-            modelBuilder.Entity("WebApi.Domain.Models.UserLogin", b =>
-                {
-                    b.Navigation("Teachers");
                 });
 #pragma warning restore 612, 618
         }
