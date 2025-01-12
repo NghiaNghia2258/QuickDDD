@@ -86,6 +86,8 @@ builder.Services.AddScoped<IAuthoziRepository, IdentityRepository>();
 builder.Services.AddScoped<IAuthService, IdentityServices>();
 builder.Services.AddScoped<IAuthoziService, IdentityServices>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
+builder.Services.AddScoped<ISubjectService, SubjectService>();
+builder.Services.AddScoped<IFacultyService, FacultyService>();
 
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

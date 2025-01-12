@@ -15,4 +15,8 @@ public class FacultyRepository : RepositoryBase<Faculty, int>, IFacultyRepositor
     {
         return await _dbContext.Faculties.FirstOrDefaultAsync(x => x.Id == id);
     }
+    public async Task<List<Faculty>> GetAll()
+    {
+        return await FindAll().ToListAsync();
+    }
 }
