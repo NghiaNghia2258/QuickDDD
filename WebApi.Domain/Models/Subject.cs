@@ -18,6 +18,7 @@ public class Subject: EntityBase<int>, ISoftDelete
     public string? DeletedBy { get ; set ; }
     public string? DeletedName { get ; set ; }
 
+    public virtual ICollection<Teacher> Teachers { get; set; } = new List<Teacher>();
     public virtual ICollection<Major> Majors { get; set; } = new List<Major>();
     public virtual ICollection<StudentGrade> StudentGrades { get; set; } = new List<StudentGrade>();
 

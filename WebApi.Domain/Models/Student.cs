@@ -25,4 +25,5 @@ public class Student: EntityBase<int>, IAuditableEntity
     public virtual ICollection<StudentGrade> StudentGrades { get; set; } = new List<StudentGrade>();
 
     public virtual UserLogin UserLogin { get; set; }
+    public virtual ICollection<SchoolClass> SchoolClasses { get; set; } = new List<SchoolClass>();
 }

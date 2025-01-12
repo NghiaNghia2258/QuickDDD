@@ -32,6 +32,8 @@ namespace WebApi.DAL
         public virtual DbSet<StudentFeedback> StudentFeedback { get; set; }
         public virtual DbSet<StudentGrade> StudentGrades { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
+        public virtual DbSet<SchoolClass> SchoolClasses { get; set; }
+        public virtual DbSet<Teacher> Teachers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=AppDb;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
@@ -73,7 +75,19 @@ namespace WebApi.DAL
 				entity.HasOne(d => d.RoleGroup).WithMany(p => p.UserLogins).HasForeignKey(d => d.RoleGroupId);
 			});
 
-			var softDeleteEntities = typeof(ISoftDelete).Assembly.GetTypes()
+            modelBuilder.Entity<SchoolClass>()
+				.HasOne(sc => sc.HomeroomTeacher)  // Mỗi lớp có một giáo viên chủ nhiệm
+				.WithMany(t => t.HomeroomClasses)  // Một giáo viên có thể làm chủ nhiệm nhiều lớp
+				.HasForeignKey(sc => sc.HomeroomTeacherId)  // Khóa ngoại trong bảng SchoolClass
+				.OnDelete(DeleteBehavior.Restrict);  // Không tự động xóa giáo viên khi lớp bị xóa
+
+            // Cấu hình mối quan hệ "1 giáo viên giảng dạy ở nhiều lớp" (many-to-many)
+            modelBuilder.Entity<SchoolClass>()
+                .HasMany(sc => sc.Teachers)  // Mỗi lớp có thể có nhiều giáo viên giảng dạy
+                .WithMany(t => t.SchoolClasses)  // Một giáo viên có thể giảng dạy nhiều lớp
+                .UsingEntity(j => j.ToTable("SchoolClassTeacher"));
+
+            var softDeleteEntities = typeof(ISoftDelete).Assembly.GetTypes()
 	        .Where(type => typeof(ISoftDelete).IsAssignableFrom(type)
 		        && type.IsClass
 		        && !type.IsAbstract);
@@ -82,6 +96,8 @@ namespace WebApi.DAL
 				modelBuilder.Entity(softDeleteEntity).HasQueryFilter(GenerateQueryFilterLambda(softDeleteEntity));
 			}
 			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+
 
 			OnModelCreatingPartial(modelBuilder);
         }

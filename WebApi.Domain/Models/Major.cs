@@ -13,5 +13,5 @@ public class Major : EntityBase<int>, ISoftDelete
     public string? DeletedName { get ; set ; }
     public virtual Faculty Faculty { get; set; } = null!;
     public virtual ICollection<Subject> Subjects { get; set; } = new List<Subject>();
-
+    public virtual ICollection<SchoolClass> SchoolClasses { get; set; } = new List<SchoolClass>();
 }
