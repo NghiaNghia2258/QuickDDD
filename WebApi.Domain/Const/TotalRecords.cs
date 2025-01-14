@@ -2,9 +2,8 @@
 {
 	public static class TotalRecords
 	{
-		public static int CATEGORY = 0;
-		public static int PRODUCT = 0;
-		public static int QUIZ = 0;
+		public static int STUDENT = 0;
+		public static int TEACHER = 0;
 		public static int SUBJECT = 0;
     }
 }

@@ -3,6 +3,7 @@ using WebApi.BLL.Interfaces;
 using WebApi.BLL.Mapper.Students;
 using WebApi.BLL.ServicesBase;
 using WebApi.Domain.Abstractions;
+using WebApi.Domain.Models;
 using WebApi.Domain.ParamsFilter;
 
 namespace WebApi.BLL.Services;
@@ -13,9 +14,14 @@ public class StudentService : ServiceBase, IStudentService
     {
     }
 
-    public Task<bool> Create(CreateStudentDto model)
+    public async Task<bool> Create(CreateStudentDto model)
     {
-        throw new NotImplementedException();
+        Student newStudent = _mapper.Map<Student>(model);
+
+
+
+        await _unitOfWork.Student.Create(newStudent);
+        return true;
     }
 
     public Task<IEnumerable<GetAllStudentDto>> GetAllStudents(OptionFilterStudent option)

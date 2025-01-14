@@ -11,6 +11,7 @@ namespace WebApi.Domain.Abstractions
 		public IFacultyRepository Faculty { get; }
         public ISubjectRepository Subject { get; }
 		public IIdentityRepository Identity { get; }
+		public IStudentRepository Student { get; }
 
         Task<IDbContextTransaction> BeginTransactionAsync();
 		Task CommitAsync();
