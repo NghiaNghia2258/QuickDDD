@@ -18,11 +18,11 @@ namespace WebApi.DAL
         {
         }
 
-		public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
 
-		public virtual DbSet<RoleGroup> RoleGroups { get; set; }
+        public virtual DbSet<RoleGroup> RoleGroups { get; set; }
 
-		public virtual DbSet<UserLogin> UserLogins { get; set; }
+        public virtual DbSet<UserLogin> UserLogins { get; set; }
 
 
         public virtual DbSet<Faculty> Faculties { get; set; }
@@ -36,50 +36,50 @@ namespace WebApi.DAL
         public virtual DbSet<Teacher> Teachers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=AppDb;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+            => optionsBuilder.UseSqlServer("Data Source=DESKTOP-4IRULJH;Initial Catalog=AppDb;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
 
 
 
-		private static LambdaExpression GenerateQueryFilterLambda(Type entityType)
-		{
-			var parameter = Expression.Parameter(entityType, "w");
-
-			var propertyAccess = Expression.PropertyOrField(parameter, nameof(ISoftDelete.IsDeleted));
-
-			var equalExpression = Expression.Equal(propertyAccess, Expression.Constant(false));
-
-			return Expression.Lambda(equalExpression, parameter);
-		}
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        private static LambdaExpression GenerateQueryFilterLambda(Type entityType)
         {
-			SeedData.Seed(modelBuilder);
-			modelBuilder.Entity<RoleGroup>(entity =>
-			{
-				entity.HasMany(d => d.Roles).WithMany(p => p.RoleGroups)
-					.UsingEntity<Dictionary<string, object>>(
-						"RoleRoleGroup",
-						r => r.HasOne<Role>().WithMany().HasForeignKey("RolesId"),
-						l => l.HasOne<RoleGroup>().WithMany().HasForeignKey("RoleGroupsId"),
-						j =>
-						{
-							j.HasKey("RoleGroupsId", "RolesId");
-							j.ToTable("RoleRoleGroup");
-							j.HasIndex(new[] { "RolesId" }, "IX_RoleRoleGroup_RolesId");
-						});
-			});
+            var parameter = Expression.Parameter(entityType, "w");
 
-			modelBuilder.Entity<UserLogin>(entity =>
-			{
-				entity.HasIndex(e => e.RoleGroupId, "IX_UserLogins_RoleGroupId");
+            var propertyAccess = Expression.PropertyOrField(parameter, nameof(ISoftDelete.IsDeleted));
 
-				entity.HasOne(d => d.RoleGroup).WithMany(p => p.UserLogins).HasForeignKey(d => d.RoleGroupId);
-			});
+            var equalExpression = Expression.Equal(propertyAccess, Expression.Constant(false));
+
+            return Expression.Lambda(equalExpression, parameter);
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            SeedData.Seed(modelBuilder);
+            modelBuilder.Entity<RoleGroup>(entity =>
+            {
+                entity.HasMany(d => d.Roles).WithMany(p => p.RoleGroups)
+                    .UsingEntity<Dictionary<string, object>>(
+                        "RoleRoleGroup",
+                        r => r.HasOne<Role>().WithMany().HasForeignKey("RolesId"),
+                        l => l.HasOne<RoleGroup>().WithMany().HasForeignKey("RoleGroupsId"),
+                        j =>
+                        {
+                            j.HasKey("RoleGroupsId", "RolesId");
+                            j.ToTable("RoleRoleGroup");
+                            j.HasIndex(new[] { "RolesId" }, "IX_RoleRoleGroup_RolesId");
+                        });
+            });
+
+            modelBuilder.Entity<UserLogin>(entity =>
+            {
+                entity.HasIndex(e => e.RoleGroupId, "IX_UserLogins_RoleGroupId");
+
+                entity.HasOne(d => d.RoleGroup).WithMany(p => p.UserLogins).HasForeignKey(d => d.RoleGroupId);
+            });
 
             modelBuilder.Entity<SchoolClass>()
-				.HasOne(sc => sc.HomeroomTeacher)  // Mỗi lớp có một giáo viên chủ nhiệm
-				.WithMany(t => t.HomeroomClasses)  // Một giáo viên có thể làm chủ nhiệm nhiều lớp
-				.HasForeignKey(sc => sc.HomeroomTeacherId)  // Khóa ngoại trong bảng SchoolClass
-				.OnDelete(DeleteBehavior.Restrict);  // Không tự động xóa giáo viên khi lớp bị xóa
+                .HasOne(sc => sc.HomeroomTeacher)  // Mỗi lớp có một giáo viên chủ nhiệm
+                .WithMany(t => t.HomeroomClasses)  // Một giáo viên có thể làm chủ nhiệm nhiều lớp
+                .HasForeignKey(sc => sc.HomeroomTeacherId)  // Khóa ngoại trong bảng SchoolClass
+                .OnDelete(DeleteBehavior.Restrict);  // Không tự động xóa giáo viên khi lớp bị xóa
 
             // Cấu hình mối quan hệ "1 giáo viên giảng dạy ở nhiều lớp" (many-to-many)
             modelBuilder.Entity<SchoolClass>()
@@ -88,18 +88,18 @@ namespace WebApi.DAL
                 .UsingEntity(j => j.ToTable("SchoolClassTeacher"));
 
             var softDeleteEntities = typeof(ISoftDelete).Assembly.GetTypes()
-	        .Where(type => typeof(ISoftDelete).IsAssignableFrom(type)
-		        && type.IsClass
-		        && !type.IsAbstract);
-			foreach (var softDeleteEntity in softDeleteEntities)
-			{
-				modelBuilder.Entity(softDeleteEntity).HasQueryFilter(GenerateQueryFilterLambda(softDeleteEntity));
-			}
-			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            .Where(type => typeof(ISoftDelete).IsAssignableFrom(type)
+                && type.IsClass
+                && !type.IsAbstract);
+            foreach (var softDeleteEntity in softDeleteEntities)
+            {
+                modelBuilder.Entity(softDeleteEntity).HasQueryFilter(GenerateQueryFilterLambda(softDeleteEntity));
+            }
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
 
 
-			OnModelCreatingPartial(modelBuilder);
+            OnModelCreatingPartial(modelBuilder);
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
