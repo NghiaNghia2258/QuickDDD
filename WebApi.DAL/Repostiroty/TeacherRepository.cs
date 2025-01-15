@@ -21,7 +21,7 @@ public class TeacherRepository : RepositoryBase<Teacher, int>, ITeacherRepositor
     public async Task<int> GetOrdinalNumberOfCurrentYear()
     {
         int ordinal = await _dbContext.Teachers.CountAsync(x => x.CreatedAt.Year == TimeConst.CurrentYear);
-        return 0;
+        return ordinal;
     }
     public async Task<List<Teacher>> GetAll(OptionFilterTeacher option)
     {

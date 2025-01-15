@@ -6,5 +6,5 @@ namespace WebApi.BLL.Interfaces;
 public interface IStudentService
 {
     Task<bool> Create(CreateStudentDto model);
-    Task<IEnumerable<GetAllStudentDto>> GetAllStudents(OptionFilterStudent option);
+    Task<IEnumerable<GetAllStudentDto>> GetAll(OptionFilterStudent option);
 }

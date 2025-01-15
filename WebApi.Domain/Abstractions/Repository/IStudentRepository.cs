@@ -9,5 +9,6 @@ public interface IStudentRepository
     Task<bool> Delete(int id);
     Task<List<Student>> GetAll(OptionFilterStudent option);
     Task<Student> GetById(int id);
+    Task<int> GetOrdinalNumberByMajorIdOfCurrentYear(int majorId);
     Task<bool> Update(Student student);
 }

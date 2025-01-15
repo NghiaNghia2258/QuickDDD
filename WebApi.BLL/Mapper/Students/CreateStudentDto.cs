@@ -11,4 +11,5 @@ public class CreateStudentDto
     public string? IdentityCardNumber { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public int MajorId { get; set; }
+    public string MajorCode { get; set; }
 }

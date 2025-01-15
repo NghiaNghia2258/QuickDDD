@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using WebApi.BLL.Interfaces;
 using WebApi.BLL.Mapper.Faculties;
-using WebApi.BLL.Mapper.Subjects;
+using WebApi.BLL.Mapper.Majors;
 using WebApi.BLL.ServicesBase;
 using WebApi.Domain.Abstractions;
 using WebApi.Domain.Models;
@@ -17,5 +17,10 @@ public class FacultyService : ServiceBase, IFacultyService
     {
         List<Faculty> faculties = await _unitOfWork.Faculty.GetAll();
         return _mapper.Map<List<GetAllFacultyDto>>(faculties);
+    }
+    public async Task<IEnumerable<GetMajorsByFacultyIdDto>> GetMajorsById(int id)
+    {
+        var majors = await _unitOfWork.Major.GetMajorsByFacultyId(id);
+        return _mapper.Map<IEnumerable<GetMajorsByFacultyIdDto>>(majors);
     }
 }

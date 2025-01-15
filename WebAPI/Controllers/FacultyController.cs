@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApi.BLL.Interfaces;
 using WebApi.BLL.Mapper.Faculties;
+using WebApi.BLL.Mapper.Majors;
 using WebApi.Domain.ApiResult;
 
 namespace WebAPI.Controllers
@@ -24,6 +25,14 @@ namespace WebAPI.Controllers
             ApiResult res = new ApiSuccessResult();
             var data = await _faultyService.GetAll();
             res = new ApiSuccessResult<List<GetAllFacultyDto>>(data);
+            return Ok(res);
+        }
+        [HttpGet("get-marjors-by-id/{id:int}")]
+        public async Task<IActionResult> GetMajorsById(int id)
+        {
+            ApiResult res = new ApiSuccessResult();
+            var data = await _faultyService.GetMajorsById(id);
+            res = new ApiSuccessResult<IEnumerable<GetMajorsByFacultyIdDto>>(data);
             return Ok(res);
         }
     }

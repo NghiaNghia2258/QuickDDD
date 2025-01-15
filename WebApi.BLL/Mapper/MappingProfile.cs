@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using WebApi.BLL.Mapper.Faculties;
+using WebApi.BLL.Mapper.Majors;
 using WebApi.BLL.Mapper.Students;
 using WebApi.BLL.Mapper.Subjects;
 using WebApi.BLL.Mapper.Teachers;
@@ -19,5 +20,6 @@ public class MappingProfile : Profile
         CreateMap<Student,GetByIdStudentDto>().ReverseMap();
         CreateMap<Student,GetAllStudentDto>();
         CreateMap<CreateStudentDto,Student>();
+        CreateMap<Major,GetMajorsByFacultyIdDto>();
     }
 }

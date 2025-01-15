@@ -19,12 +19,16 @@ public class UnitOfWork : IUnitOfWork
     private ISubjectRepository _subjectRepository;
     private IIdentityRepository _identityRepository;
     private IStudentRepository _studentRepository;
+    private ISchoolClassRepository _schoolClassRepository;
+    private IMajorRepository _majorRepository;
 
     public ITeacherRepository Teacher => _teacherRepository ?? new TeacherRepository(_dbContext, _httpContextAccessor, _config);
     public IFacultyRepository Faculty => _facultyRepository ?? new FacultyRepository(_dbContext, _httpContextAccessor, _config);
     public ISubjectRepository Subject => _subjectRepository ?? new SubjectRepository(_dbContext,_httpContextAccessor,_config);
     public IIdentityRepository Identity => _identityRepository ?? new IdentityRepository(_dbContext,_httpContextAccessor,_config);
     public IStudentRepository Student => _studentRepository ?? new StudentRepository(_dbContext,_httpContextAccessor,_config);
+    public ISchoolClassRepository SchoolClass => _schoolClassRepository ?? new SchoolClassRepository(_dbContext,_httpContextAccessor,_config);
+    public IMajorRepository Major => _majorRepository ?? new MajorRepository(_dbContext,_httpContextAccessor,_config);
 
     public UnitOfWork(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor, IConfiguration config)
     {

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.DAL;
 
@@ -11,9 +12,11 @@ using WebApi.DAL;
 namespace WebApi.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250114132713_init10")]
+    partial class init10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,13 +62,23 @@ namespace WebApi.DAL.Migrations
                         },
                         new
                         {
-                            RoleGroupsId = 2,
-                            RolesId = 1
+                            RoleGroupsId = 1,
+                            RolesId = 2
                         },
                         new
                         {
-                            RoleGroupsId = 3,
-                            RolesId = 1
+                            RoleGroupsId = 1,
+                            RolesId = 3
+                        },
+                        new
+                        {
+                            RoleGroupsId = 1,
+                            RolesId = 4
+                        },
+                        new
+                        {
+                            RoleGroupsId = 2,
+                            RolesId = 4
                         });
                 });
 
@@ -181,6 +194,14 @@ namespace WebApi.DAL.Migrations
                             IsDeleted = false,
                             Name = "Xây dựng",
                             Version = 0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Code = "AE",
+                            IsDeleted = false,
+                            Name = "Kỹ thuật môi trường",
+                            Version = 0
                         });
                 });
 
@@ -223,80 +244,6 @@ namespace WebApi.DAL.Migrations
                     b.HasIndex("FacultyId");
 
                     b.ToTable("Majors");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Code = "101",
-                            FacultyId = 1,
-                            IsDeleted = false,
-                            Name = "Khoa học máy tính",
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Code = "125",
-                            FacultyId = 1,
-                            IsDeleted = false,
-                            Name = "Kỹ thuật phần mềm",
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Code = "210",
-                            FacultyId = 2,
-                            IsDeleted = false,
-                            Name = "Hệ thông điện",
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Code = "225",
-                            FacultyId = 2,
-                            IsDeleted = false,
-                            Name = "Điện công nghiệp và dân dụng",
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Code = "315",
-                            FacultyId = 3,
-                            IsDeleted = false,
-                            Name = "Sức bền vật liệu",
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Code = "323",
-                            FacultyId = 3,
-                            IsDeleted = false,
-                            Name = "Khí động học",
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Code = "411",
-                            FacultyId = 4,
-                            IsDeleted = false,
-                            Name = "Kỹ thuật xây dựng",
-                            Version = 0
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Code = "431",
-                            FacultyId = 4,
-                            IsDeleted = false,
-                            Name = "Kỹ thuật vật liệu",
-                            Version = 0
-                        });
                 });
 
             modelBuilder.Entity("WebApi.Domain.Models.Role", b =>
@@ -372,13 +319,6 @@ namespace WebApi.DAL.Migrations
                         },
                         new
                         {
-                            Id = 4,
-                            Code = "STUDENT",
-                            Name = "Student",
-                            Version = 0
-                        },
-                        new
-                        {
                             Id = 2,
                             Code = "USER",
                             Name = "User",
@@ -418,7 +358,7 @@ namespace WebApi.DAL.Migrations
                     b.Property<string>("DeletedName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("HomeroomTeacherId")
+                    b.Property<int>("HomeroomTeacherId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsAvailableSlot")
@@ -1024,7 +964,8 @@ namespace WebApi.DAL.Migrations
                     b.HasOne("WebApi.Domain.Models.Teacher", "HomeroomTeacher")
                         .WithMany("HomeroomClasses")
                         .HasForeignKey("HomeroomTeacherId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("WebApi.Domain.Models.Major", "Major")
                         .WithMany("SchoolClasses")

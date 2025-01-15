@@ -5,5 +5,6 @@
 		public static int STUDENT = 0;
 		public static int TEACHER = 0;
 		public static int SUBJECT = 0;
+		public static int SCHOOL_CLASS = 0;
     }
 }
