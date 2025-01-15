@@ -13,12 +13,17 @@ public class StudentRepository : RepositoryBase<Student, int>, IStudentRepositor
     public StudentRepository(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor, IConfiguration config) : base(dbContext, httpContextAccessor, config)
     {
     }
-    public async Task<int> GetOrdinalNumberByMajorIdOfCurrentYear(int majorId)
+    public async Task<int> GetOrdinalNumberOfCurrentYear()
     {
         int ordinal = await _dbContext.Students
-            .Include(x => x.SchoolClasses.Where(y =>y.MajorId == majorId))
-            .CountAsync(x => x.CreatedAt.Year == TimeConst.CurrentYear && x.SchoolClasses.Any());
+            .CountAsync(x => x.CreatedAt.Year == TimeConst.CurrentYear);
         return ordinal;
+    }
+    public async Task<bool> CreateListStudent(List<Student> students)
+    {
+        await _dbContext.Students.AddRangeAsync(students);
+        await _dbContext.SaveChangesAsync();
+        return true;
     }
     public async Task<List<Student>> GetAll(OptionFilterStudent option)
     {

@@ -6,9 +6,10 @@ namespace WebApi.Domain.Abstractions.Repository;
 public interface IStudentRepository
 {
     Task<bool> Create(Student student);
+    Task<bool> CreateListStudent(List<Student> students);
     Task<bool> Delete(int id);
     Task<List<Student>> GetAll(OptionFilterStudent option);
     Task<Student> GetById(int id);
-    Task<int> GetOrdinalNumberByMajorIdOfCurrentYear(int majorId);
+    Task<int> GetOrdinalNumberOfCurrentYear();
     Task<bool> Update(Student student);
 }

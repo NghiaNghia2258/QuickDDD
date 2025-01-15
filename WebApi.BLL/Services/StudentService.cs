@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using OfficeOpenXml;
 using WebApi.BLL.Interfaces;
 using WebApi.BLL.Mapper.Students;
 using WebApi.BLL.ServicesBase;
@@ -19,7 +21,7 @@ public class StudentService : ServiceBase, IStudentService
     {
         Student newStudent = _mapper.Map<Student>(model);
 
-        int ordinal = await _unitOfWork.Student.GetOrdinalNumberByMajorIdOfCurrentYear(model.MajorId);
+        int ordinal = await _unitOfWork.Student.GetOrdinalNumberOfCurrentYear();
         newStudent.Code = $"{model.MajorCode}_{TimeConst.CurrentYear}_{ordinal:D3}";
         newStudent.EnrollmentYear = TimeConst.CurrentYear;
 
@@ -50,7 +52,47 @@ public class StudentService : ServiceBase, IStudentService
         await _unitOfWork.Student.Create(newStudent);
         return true;
     }
+    public async Task<bool> ImportFileExcel(IFormFile file)
+    {
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
+        using (var stream = file.OpenReadStream())
+        using (var package = new ExcelPackage(stream))
+        {
+            ExcelWorksheet? worksheet = package.Workbook.Worksheets.FirstOrDefault();
+            if (worksheet == null)
+            {
+                return false;
+            }
+            int ordinal = await _unitOfWork.Student.GetOrdinalNumberOfCurrentYear();
+            int totalRows = worksheet.Dimension.Rows;
+            int totalColumns = worksheet.Dimension.Columns;
+            List<Student> students = new List<Student>();
+            for (int row = 2; row <= totalRows; row++) 
+            {
+                ordinal++;
+                Student newStudent = new Student()
+                {
+                    Code = $"{worksheet.Cells[row, 6].Text}{TimeConst.CurrentYear}{ordinal:D3}",
+                    FullName = worksheet.Cells[row,2].Text,
+                    Country = "Việt Nam",
+                    City = worksheet.Cells[row, 3].Text,
+                    Gender = worksheet.Cells[row, 4].Text,
+                    CreatedName = "Import from excel",
+                    CreatedBy = "Excel",
+                    UserLogin = new UserLogin()
+                    {
+                        Username = $"{worksheet.Cells[row, 6].Text}{TimeConst.CurrentYear}{ordinal:D3}",
+                        Password = "123456",
+                        RoleGroupId = 4
+                    }
+                };
+                students.Add(newStudent);
+            }
+            await _unitOfWork.Student.CreateListStudent(students);
+        }
+        return true;
+    }
     public async Task<IEnumerable<GetAllStudentDto>> GetAll(OptionFilterStudent option)
     {
         List<Student> students = await _unitOfWork.Student.GetAll(option);

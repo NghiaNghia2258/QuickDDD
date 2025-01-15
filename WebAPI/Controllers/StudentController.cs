@@ -37,4 +37,11 @@ public class StudentController : ControllerBase
         await _studentService.Create(model);
         return Ok(res);
     }
+    [HttpPost("import-excel")]
+    public async Task<IActionResult> ImportExcel(IFormFile file)
+    {
+        ApiResult res = new ApiSuccessResult();
+        await _studentService.ImportFileExcel(file);
+        return Ok(res);
+    }
 }
