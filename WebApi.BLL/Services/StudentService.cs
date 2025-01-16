@@ -181,4 +181,15 @@ public class StudentService : ServiceBase, IStudentService
         Student student = await _unitOfWork.Student.GetById(id);
         return _mapper.Map<GetByIdStudentDto>(student);
     }
+    public async Task<IEnumerable<GetAllStudentDto>> GetStudentsByClassId(int schoolClassId)
+    {
+        OptionFilterStudent option = new OptionFilterStudent()
+        {
+            PageIndex = 1,
+            PageSize = 50,
+            SchoolClassId = schoolClassId
+        };
+        IEnumerable<Student> students = await _unitOfWork.Student.GetAll(option);
+        return _mapper.Map<IEnumerable<GetAllStudentDto>>(students);
+    }
 }

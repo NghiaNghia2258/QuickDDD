@@ -32,6 +32,17 @@ public class StudentController : ControllerBase
         };
         return Ok(res);
     }
+    [HttpGet("get-by-class-id")]
+    public async Task<IActionResult> GetStudentsByClassId([FromQuery] int schoolClassId)
+    {
+        ApiResult res = new ApiSuccessResult();
+        var data = await _studentService.GetStudentsByClassId(schoolClassId);
+        res = new ApiSuccessResult<IEnumerable<GetAllStudentDto>>(data)
+        {
+            TotalRecordsCount = TotalRecords.STUDENT
+        };
+        return Ok(res);
+    }
     [HttpPost]
     public async Task<IActionResult> Create(CreateStudentDto model)
     {

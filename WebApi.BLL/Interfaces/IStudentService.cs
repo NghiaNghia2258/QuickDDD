@@ -10,6 +10,7 @@ public interface IStudentService
     Task<bool> Delete(int id);
     Task<IEnumerable<GetAllStudentDto>> GetAll(OptionFilterStudent option);
     Task<GetByIdStudentDto> GetById(int id);
+    Task<IEnumerable<GetAllStudentDto>> GetStudentsByClassId(int schoolClassId);
     Task<bool> ImportFileExcel(IFormFile file);
     Task<bool> Update(UpdateStudentDto model);
 }

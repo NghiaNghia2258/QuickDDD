@@ -15,7 +15,7 @@ public class SchoolClassRepository : RepositoryBase<SchoolClass, int>, ISchoolCl
     }
     public async Task<List<SchoolClass>> GetAll(OptionFilterSchoolClass option)
     {
-        var query = _dbContext.SchoolClasses;
+        var query = _dbContext.SchoolClasses.Include(x => x.Major);
         TotalRecords.SCHOOL_CLASS = await query.CountAsync();
         return await query.Skip(option.PageSize * (option.PageIndex - 1)).Take(option.PageSize).ToListAsync();
     }
@@ -25,7 +25,7 @@ public class SchoolClassRepository : RepositoryBase<SchoolClass, int>, ISchoolCl
     }
     public async Task<SchoolClass> GetById(int id)
     {
-        return await _dbContext.SchoolClasses.FirstOrDefaultAsync(x => x.Id == id);
+        return await _dbContext.SchoolClasses.Include(x => x.Major).FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<int> Create(SchoolClass schoolClass)

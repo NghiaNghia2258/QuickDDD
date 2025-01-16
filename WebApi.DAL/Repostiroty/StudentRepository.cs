@@ -27,7 +27,13 @@ public class StudentRepository : RepositoryBase<Student, int>, IStudentRepositor
     }
     public async Task<List<Student>> GetAll(OptionFilterStudent option)
     {
-        var query = _dbContext.Students.Where(x => option.NameOrCode == null || (x.Code.Contains(option.NameOrCode) || x.FullName.Contains(option.NameOrCode)));
+        var query = _dbContext.Students.Where(x =>
+            (option.NameOrCode == null || (x.Code.Contains(option.NameOrCode) || x.FullName.Contains(option.NameOrCode)))
+        );
+        if(option.SchoolClassId != null)
+        {
+            query = query.Include(x => x.SchoolClasses.Where(y => y.Id == option.SchoolClassId)).Where(x => x.SchoolClasses.Any());
+        }
         TotalRecords.STUDENT = await query.CountAsync();
         return await query.Skip(option.PageSize * (option.PageIndex - 1)).Take(option.PageSize).ToListAsync();
     }
