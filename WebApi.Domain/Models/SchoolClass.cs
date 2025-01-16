@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using WebApi.Domain.Abstractions;
+﻿using WebApi.Domain.Abstractions;
 using WebApi.Domain.Abstractions.Model;
 
 namespace WebApi.Domain.Models;
@@ -9,6 +8,7 @@ public class SchoolClass: EntityBase<int>, IAuditableEntity
     public string Code { get; set; } 
     public int? HomeroomTeacherId { get; set; }
     public int MaxStudents { get; set; } = 10;
+    public int AvailableSlots { get; set; } = 10;
     public int Status { get; set; }
     public int MajorId { get; set; }
     public bool IsAvailableSlot { get; set; } = true;

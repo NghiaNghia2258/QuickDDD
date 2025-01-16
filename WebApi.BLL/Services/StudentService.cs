@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using OfficeOpenXml;
+using System.Collections;
 using WebApi.BLL.Interfaces;
 using WebApi.BLL.Mapper.Students;
 using WebApi.BLL.ServicesBase;
@@ -26,7 +27,7 @@ public class StudentService : ServiceBase, IStudentService
         newStudent.EnrollmentYear = TimeConst.CurrentYear;
 
         SchoolClass schoolClassAvaiableSlot = await _unitOfWork.SchoolClass.GetOneClassesByMajorIdWithAvailableSlot(model.MajorId);
-        if(schoolClassAvaiableSlot == null)
+        if (schoolClassAvaiableSlot == null)
         {
             int countSchoolClass = await _unitOfWork.Major.CountClassesByIdInCurrentYear(model.MajorId);
             schoolClassAvaiableSlot = new SchoolClass()
@@ -65,31 +66,97 @@ public class StudentService : ServiceBase, IStudentService
                 return false;
             }
             int ordinal = await _unitOfWork.Student.GetOrdinalNumberOfCurrentYear();
+
             int totalRows = worksheet.Dimension.Rows;
             int totalColumns = worksheet.Dimension.Columns;
-            List<Student> students = new List<Student>();
-            for (int row = 2; row <= totalRows; row++) 
+            Dictionary<string, List<Student>> pairsStudentSortByMajor = new Dictionary<string, List<Student>>();
+            Dictionary<string, SchoolClass> pairsClass = new Dictionary<string, SchoolClass>();
+            using (var transaction = await _unitOfWork.BeginTransactionAsync())
             {
-                ordinal++;
-                Student newStudent = new Student()
+                try
                 {
-                    Code = $"{worksheet.Cells[row, 6].Text}{TimeConst.CurrentYear}{ordinal:D3}",
-                    FullName = worksheet.Cells[row,2].Text,
-                    Country = "Việt Nam",
-                    City = worksheet.Cells[row, 3].Text,
-                    Gender = worksheet.Cells[row, 4].Text,
-                    CreatedName = "Import from excel",
-                    CreatedBy = "Excel",
-                    UserLogin = new UserLogin()
+                    for (int row = 2; row <= totalRows; row++)
                     {
-                        Username = $"{worksheet.Cells[row, 6].Text}{TimeConst.CurrentYear}{ordinal:D3}",
-                        Password = "123456",
-                        RoleGroupId = 4
+                        ordinal++;
+                        Student newStudent = new Student()
+                        {
+                            Code = $"{worksheet.Cells[row, 6].Text}{TimeConst.CurrentYear}{ordinal:D3}",
+                            FullName = worksheet.Cells[row, 2].Text,
+                            Country = "Việt Nam",
+                            City = worksheet.Cells[row, 3].Text,
+                            Gender = worksheet.Cells[row, 4].Text,
+                            EnrollmentYear = TimeConst.CurrentYear,
+                            CreatedName = "Import from excel",
+                            CreatedBy = "Excel",
+                            UserLogin = new UserLogin()
+                            {
+                                Username = $"{worksheet.Cells[row, 6].Text}{TimeConst.CurrentYear}{ordinal:D3}",
+                                Password = "123456",
+                                RoleGroupId = 4
+                            }
+                        };
+                        if (pairsClass.TryGetValue(worksheet.Cells[row, 5].Text, out SchoolClass schoolClass))
+                        {
+                            if (schoolClass.AvailableSlots > 0)
+                            {
+                                newStudent.SchoolClasses.Add(schoolClass);
+                                schoolClass.AvailableSlots--;
+                            }
+                            else
+                            {
+                                schoolClass.IsAvailableSlot = false;
+                                int ordinalClass = await _unitOfWork.Major.CountClassesByIdInCurrentYear(int.Parse(worksheet.Cells[row, 5].Text));
+                                ordinalClass++;
+                                SchoolClass newSchoolClass = new SchoolClass()
+                                {
+                                    Code = $"{worksheet.Cells[row, 6].Text}_{TimeConst.CurrentYear}_{ordinalClass:D2}",
+                                    MajorId = int.Parse(worksheet.Cells[row, 5].Text)
+                                };
+                                await _unitOfWork.SchoolClass.Create(newSchoolClass);
+                                pairsClass.Remove(worksheet.Cells[row, 5].Text);
+                                pairsClass.TryAdd(worksheet.Cells[row, 5].Text, newSchoolClass);
+                                newStudent.SchoolClasses.Add(newSchoolClass);
+                                newSchoolClass.AvailableSlots--;
+                            }
+                        }
+                        else
+                        {
+                            int ordinalClass = await _unitOfWork.Major.CountClassesByIdInCurrentYear(int.Parse(worksheet.Cells[row, 5].Text));
+                            ordinalClass++;
+                            SchoolClass newSchoolClass = new SchoolClass()
+                            {
+                                Code = $"{worksheet.Cells[row, 6].Text}_{TimeConst.CurrentYear}_{ordinalClass:D2}",
+                                MajorId = int.Parse(worksheet.Cells[row, 5].Text)
+                            };
+                            await _unitOfWork.SchoolClass.Create(newSchoolClass);
+                            pairsClass.Remove(worksheet.Cells[row, 5].Text);
+                            pairsClass.TryAdd(worksheet.Cells[row, 5].Text, newSchoolClass);
+                            newStudent.SchoolClasses.Add(newSchoolClass);
+                            newSchoolClass.AvailableSlots--;
+                        }
+                        if (pairsStudentSortByMajor.TryGetValue(worksheet.Cells[row, 5].Text, out List<Student>? students))
+                        {
+                            students.Add(newStudent);
+                        }
+                        else
+                        {
+                            students = new List<Student>() { newStudent };
+                            pairsStudentSortByMajor.TryAdd(worksheet.Cells[row, 5].Text, students);
+                        }
                     }
-                };
-                students.Add(newStudent);
+                    List<Student> newStudents = new List<Student>();
+                    foreach (List<Student> item in pairsStudentSortByMajor.Values)
+                    {
+                        newStudents.AddRange(item);
+                    }
+                    await _unitOfWork.Student.CreateListStudent(newStudents);
+                    await transaction.CommitAsync();
+                }
+                catch (Exception)
+                {
+                    await transaction.RollbackAsync();
+                }
             }
-            await _unitOfWork.Student.CreateListStudent(students);
         }
         return true;
     }
@@ -100,7 +167,7 @@ public class StudentService : ServiceBase, IStudentService
     }
     public async Task<bool> Update(UpdateStudentDto model)
     {
-        Student student = _mapper.Map<Student>(model);  
+        Student student = _mapper.Map<Student>(model);
         await _unitOfWork.Student.Update(student);
         return true;
     }
