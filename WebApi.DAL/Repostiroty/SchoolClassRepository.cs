@@ -28,6 +28,7 @@ public class SchoolClassRepository : RepositoryBase<SchoolClass, int>, ISchoolCl
         return await _dbContext.SchoolClasses
             .Include(x => x.Major)
             .Include(x => x.Students)
+            .ThenInclude(x => x.Student)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 

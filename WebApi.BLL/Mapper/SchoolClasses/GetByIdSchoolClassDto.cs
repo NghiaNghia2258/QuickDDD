@@ -16,6 +16,4 @@ public class GetByIdSchoolClassDto: GetAllSchoolClassDto
     public string? DeletedBy { get; set; }
     public string? DeletedName { get; set; }
     public int Version { get; set; }
-
-    public IEnumerable<GetByIdStudentDto> Students { get; set; }
 }

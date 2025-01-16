@@ -41,9 +41,18 @@ public class SchoolClassService : ServiceBase, ISchoolClassService
         {
             return;
         }
+        foreach (var item in model.StudentIds)
+        {
+            schoolClass.Students.Add(new SchoolClassStudent()
+            {
+                StudentsId = item,
+                SchoolClassesId = schoolClass.Id
+            });
+        }
+        await _unitOfWork.SchoolClass.Update(schoolClass);
     }
     public async Task RemoveStudentFromClass(int studentId, int schoolClassId)
     {
-        
+        await _unitOfWork.SchoolClassesStudent.Delete(studentId, schoolClassId);
     }
 }
