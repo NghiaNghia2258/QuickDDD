@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApi.BLL.Interfaces;
 using WebApi.BLL.Mapper.Students;
+using WebApi.BLL.Mapper.Teachers;
+using WebApi.BLL.Services;
 using WebApi.Domain.ApiResult;
 using WebApi.Domain.Const;
 using WebApi.Domain.ParamsFilter;
@@ -42,6 +44,32 @@ public class StudentController : ControllerBase
     {
         ApiResult res = new ApiSuccessResult();
         await _studentService.ImportFileExcel(file);
+        return Ok(res);
+    }
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        ApiResult res = new ApiSuccessResult();
+
+        var data = await _studentService.GetById(id);
+        res = new ApiSuccessResult<GetByIdStudentDto>(data);
+        return Ok(res);
+    }
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        ApiResult res = new ApiSuccessResult();
+
+        var data = await _studentService.Delete(id);
+        res = new ApiSuccessResult<bool>(data);
+        return Ok(res);
+    }
+    [HttpPut]
+    public async Task<IActionResult> Update([FromBody] UpdateStudentDto model)
+    {
+        ApiResult res = new ApiSuccessResult();
+        var data = await _studentService.Update(model);
+        res = new ApiSuccessResult<bool>(data);
         return Ok(res);
     }
 }

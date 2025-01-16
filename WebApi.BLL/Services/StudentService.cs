@@ -98,4 +98,20 @@ public class StudentService : ServiceBase, IStudentService
         List<Student> students = await _unitOfWork.Student.GetAll(option);
         return _mapper.Map<IEnumerable<GetAllStudentDto>>(students);
     }
+    public async Task<bool> Update(UpdateStudentDto model)
+    {
+        Student student = _mapper.Map<Student>(model);  
+        await _unitOfWork.Student.Update(student);
+        return true;
+    }
+    public async Task<bool> Delete(int id)
+    {
+        await _unitOfWork.Student.Delete(id);
+        return true;
+    }
+    public async Task<GetByIdStudentDto> GetById(int id)
+    {
+        Student student = await _unitOfWork.Student.GetById(id);
+        return _mapper.Map<GetByIdStudentDto>(student);
+    }
 }
