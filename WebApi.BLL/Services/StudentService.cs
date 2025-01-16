@@ -37,7 +37,11 @@ public class StudentService : ServiceBase, IStudentService
             };
             await _unitOfWork.SchoolClass.Create(schoolClassAvaiableSlot);
         }
-        newStudent.SchoolClasses.Add(schoolClassAvaiableSlot);
+        newStudent.SchoolClasses.Add(new SchoolClassStudent()
+        {
+            Student = newStudent,
+            StudentClass = schoolClassAvaiableSlot
+        });
 
         RoleGroup roleStudent = await _unitOfWork.Identity.GetRoleGroupByCode("STUDENT");
 
@@ -99,7 +103,11 @@ public class StudentService : ServiceBase, IStudentService
                         {
                             if (schoolClass.AvailableSlots > 0)
                             {
-                                newStudent.SchoolClasses.Add(schoolClass);
+                                newStudent.SchoolClasses.Add(new SchoolClassStudent()
+                                {
+                                    Student = newStudent,
+                                    StudentClass = schoolClass
+                                });
                                 schoolClass.AvailableSlots--;
                             }
                             else
@@ -115,7 +123,11 @@ public class StudentService : ServiceBase, IStudentService
                                 await _unitOfWork.SchoolClass.Create(newSchoolClass);
                                 pairsClass.Remove(worksheet.Cells[row, 5].Text);
                                 pairsClass.TryAdd(worksheet.Cells[row, 5].Text, newSchoolClass);
-                                newStudent.SchoolClasses.Add(newSchoolClass);
+                                newStudent.SchoolClasses.Add(new SchoolClassStudent()
+                                {
+                                    Student = newStudent,
+                                    StudentClass = newSchoolClass
+                                });
                                 newSchoolClass.AvailableSlots--;
                             }
                         }
@@ -131,7 +143,11 @@ public class StudentService : ServiceBase, IStudentService
                             await _unitOfWork.SchoolClass.Create(newSchoolClass);
                             pairsClass.Remove(worksheet.Cells[row, 5].Text);
                             pairsClass.TryAdd(worksheet.Cells[row, 5].Text, newSchoolClass);
-                            newStudent.SchoolClasses.Add(newSchoolClass);
+                            newStudent.SchoolClasses.Add(new SchoolClassStudent()
+                            {
+                                Student = newStudent,
+                                StudentClass = newSchoolClass
+                            });
                             newSchoolClass.AvailableSlots--;
                         }
                         if (pairsStudentSortByMajor.TryGetValue(worksheet.Cells[row, 5].Text, out List<Student>? students))

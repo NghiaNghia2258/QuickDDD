@@ -34,4 +34,16 @@ public class SchoolClassService : ServiceBase, ISchoolClassService
         await _unitOfWork.SchoolClass.Delete(id);
         return true;
     }
+    public async Task AddStudentsToClass(AddStudentsToClassDto model)
+    {
+        SchoolClass schoolClass = await _unitOfWork.SchoolClass.GetById(model.SchoolClassId);
+        if(schoolClass == null)
+        {
+            return;
+        }
+    }
+    public async Task RemoveStudentFromClass(int studentId, int schoolClassId)
+    {
+        
+    }
 }

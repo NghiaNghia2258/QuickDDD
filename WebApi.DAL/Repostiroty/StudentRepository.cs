@@ -32,7 +32,7 @@ public class StudentRepository : RepositoryBase<Student, int>, IStudentRepositor
         );
         if(option.SchoolClassId != null)
         {
-            query = query.Include(x => x.SchoolClasses.Where(y => y.Id == option.SchoolClassId)).Where(x => x.SchoolClasses.Any());
+            query = query.Include(x => x.SchoolClasses.Where(y => y.SchoolClassesId == option.SchoolClassId)).Where(x => x.SchoolClasses.Any());
         }
         TotalRecords.STUDENT = await query.CountAsync();
         return await query.Skip(option.PageSize * (option.PageIndex - 1)).Take(option.PageSize).ToListAsync();

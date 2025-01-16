@@ -63,6 +63,14 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> AddStudentsToClass(AddStudentsToClassDto model)
         {
             ApiResult res = new ApiSuccessResult();
+            await _schoolClassService.AddStudentsToClass(model);
+            return Ok(res);
+        }
+        [HttpDelete("remove-student-from-class")]
+        public async Task<IActionResult> RemoveStudentFromClass(int studentId,int schoolClassId)
+        {
+            ApiResult res = new ApiSuccessResult();
+            await _schoolClassService.RemoveStudentFromClass(studentId,schoolClassId);
             return Ok(res);
         }
     }

@@ -34,6 +34,7 @@ namespace WebApi.DAL
         public virtual DbSet<Subject> Subjects { get; set; }
         public virtual DbSet<SchoolClass> SchoolClasses { get; set; }
         public virtual DbSet<Teacher> Teachers { get; set; }
+        public virtual DbSet<SchoolClassStudent> SchoolClassStudent { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=AppDb;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
@@ -80,7 +81,21 @@ namespace WebApi.DAL
 				.WithMany(t => t.HomeroomClasses)  // Một giáo viên có thể làm chủ nhiệm nhiều lớp
 				.HasForeignKey(sc => sc.HomeroomTeacherId)  // Khóa ngoại trong bảng SchoolClass
 				.OnDelete(DeleteBehavior.Restrict);  // Không tự động xóa giáo viên khi lớp bị xóa
+            modelBuilder.Entity<SchoolClassStudent>(entity =>
+            {
+                // Định nghĩa khóa chính
+                entity.HasKey(e => new { e.SchoolClassesId, e.StudentsId });
 
+                // Định nghĩa quan hệ với Student
+                entity.HasOne(e => e.Student)
+                      .WithMany(s => s.SchoolClasses)
+                      .HasForeignKey(e => e.StudentsId);
+
+                // Định nghĩa quan hệ với SchoolClass
+                entity.HasOne(e => e.StudentClass)
+                      .WithMany(sc => sc.Students)
+                      .HasForeignKey(e => e.SchoolClassesId);
+            });
             // Cấu hình mối quan hệ "1 giáo viên giảng dạy ở nhiều lớp" (many-to-many)
             modelBuilder.Entity<SchoolClass>()
                 .HasMany(sc => sc.Teachers)  // Mỗi lớp có thể có nhiều giáo viên giảng dạy

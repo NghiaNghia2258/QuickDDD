@@ -24,10 +24,11 @@ public class SchoolClass: EntityBase<int>, IAuditableEntity
     public string? DeletedName { get ; set ; }
 
     public virtual Major Major { get; set; }
-    public virtual ICollection<Student> Students { get; set; } = new List<Student>();
+    public virtual ICollection<SchoolClassStudent> Students { get; set; } = new List<SchoolClassStudent>();
     // Mối quan hệ "1 giáo viên chủ nhiệm 1 lớp"
     public virtual Teacher HomeroomTeacher { get; set; }
 
     // Mối quan hệ nhiều giáo viên giảng dạy nhiều lớp
     public virtual ICollection<Teacher> Teachers { get; set; } = new List<Teacher>();
+
 }

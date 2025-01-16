@@ -25,7 +25,10 @@ public class SchoolClassRepository : RepositoryBase<SchoolClass, int>, ISchoolCl
     }
     public async Task<SchoolClass> GetById(int id)
     {
-        return await _dbContext.SchoolClasses.Include(x => x.Major).FirstOrDefaultAsync(x => x.Id == id);
+        return await _dbContext.SchoolClasses
+            .Include(x => x.Major)
+            .Include(x => x.Students)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<int> Create(SchoolClass schoolClass)
