@@ -83,4 +83,12 @@ public class StudentController : ControllerBase
         res = new ApiSuccessResult<bool>(data);
         return Ok(res);
     }
+    [HttpGet("get-grades/{id}")]
+    public async Task<IActionResult> GetGradeById(int id)
+    {
+        ApiResult res = new ApiSuccessResult();
+        var data = await _studentService.GetGradeById(id);
+        res = new ApiSuccessResult<IEnumerable<StudentGradeDto>>(data);
+        return Ok(res);
+    }
 }

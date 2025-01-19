@@ -13,6 +13,10 @@ public class StudentRepository : RepositoryBase<Student, int>, IStudentRepositor
     public StudentRepository(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor, IConfiguration config) : base(dbContext, httpContextAccessor, config)
     {
     }
+    public async Task<IEnumerable<StudentGrade>> GetGradeById(int id)
+    {
+        return await _dbContext.StudentGrades.Where(x => x.StudentId == id).ToListAsync();
+    }
     public async Task<int> GetOrdinalNumberOfCurrentYear()
     {
         int ordinal = await _dbContext.Students

@@ -18,6 +18,11 @@ public class StudentService : ServiceBase, IStudentService
     {
     }
 
+    public async Task<IEnumerable<StudentGradeDto>> GetGradeById(int id)
+    {
+        var data = await _unitOfWork.Student.GetGradeById(id);
+        return _mapper.Map<IEnumerable<StudentGradeDto>>(data);
+    }
     public async Task<bool> Create(CreateStudentDto model)
     {
         Student newStudent = _mapper.Map<Student>(model);

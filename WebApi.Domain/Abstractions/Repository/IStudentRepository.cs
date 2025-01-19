@@ -10,6 +10,7 @@ public interface IStudentRepository
     Task<bool> Delete(int id);
     Task<List<Student>> GetAll(OptionFilterStudent option);
     Task<Student> GetById(int id);
+    Task<IEnumerable<StudentGrade>> GetGradeById(int id);
     Task<int> GetOrdinalNumberOfCurrentYear();
     Task<bool> Update(Student student);
 }
