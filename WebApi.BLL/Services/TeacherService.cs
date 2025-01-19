@@ -54,6 +54,12 @@ public class TeacherService : ServiceBase, ITeacherService
             }
         }
 
+        foreach (int classId in model.ClassIds)
+        {
+            SchoolClass schoolClass = await _unitOfWork.SchoolClass.GetById(classId);
+            newTeacher.SchoolClasses.Add(schoolClass);
+        }
+
         RoleGroup roleTeacher = await _unitOfWork.Identity.GetRoleGroupByCode("TEACHER");
 
         UserLogin newUser = new UserLogin()

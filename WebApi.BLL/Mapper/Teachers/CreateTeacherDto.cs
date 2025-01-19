@@ -7,4 +7,5 @@ public class CreateTeacherDto
     public string Phone { get; set; }
     public int FacultyId { get; set; }
     public List<int> SubjectIds { get; set; }
+    public List<int> ClassIds { get; set; }
 }
