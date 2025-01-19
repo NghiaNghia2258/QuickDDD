@@ -30,6 +30,7 @@ public class MappingProfile : Profile
         CreateMap<StudentGrade,StudentGradeDto>()
              .ForMember(dest => dest.StudentCode, ost => ost.MapFrom(x => x.Student.Code))
              .ForMember(dest => dest.StudentName, ost => ost.MapFrom(x => x.Student.FullName))
+             .ForMember(dest => dest.SubjectName, ost => ost.MapFrom(x => x.Subject.Name))
             .ReverseMap();
         CreateMap<SchoolClass, GetByIdSchoolClassDto>().ForMember(
            dest => dest.MajorName, ost => ost.MapFrom(x => x.Major.Name)

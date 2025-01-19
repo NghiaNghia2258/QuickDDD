@@ -13,5 +13,4 @@ public class GetByIdStudentDto: GetAllStudentDto
     public DateTime? DeletedAt { get; set; }
     public string? DeletedBy { get; set; }
     public string? DeletedName { get; set; }
-    public int Version { get; set; }
 }

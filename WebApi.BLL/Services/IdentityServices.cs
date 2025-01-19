@@ -34,8 +34,19 @@ public class IdentityServices : IAuthService, IAuthoziService
 		}
 		PayloadToken payloadToken = new PayloadToken();
 		payloadToken.Username = userlogin.Username;
-		payloadToken.UserLoginId = userlogin.Id;
-		List<RoleDto> roles = new List<RoleDto>();
+		Student isStudent = await _authenRepository.GetStudentById(userlogin.Id);
+		if(isStudent != null)
+		{
+			payloadToken.UserLoginId = isStudent.Id;
+			payloadToken.FullName = isStudent.FullName;
+		}
+        Teacher isTeacher = await _authenRepository.GetTeacherById(userlogin.Id);
+        if (isTeacher != null)
+        {
+            payloadToken.UserLoginId = isTeacher.Id;
+			payloadToken.FullName = isTeacher.FullName;
+        }
+        List<RoleDto> roles = new List<RoleDto>();
 		foreach(var item in userlogin.RoleGroup.Roles)
 		{
 			roles.Add(new RoleDto

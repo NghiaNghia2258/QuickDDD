@@ -7,6 +7,7 @@ public class StudentGradeDto
     public string? StudentCode { get; set; }
     public string? StudentName { get; set; }
     public int SubjectId { get; set; }
+    public string? SubjectName { get; set; }
     public double PracticalGrade { get; set; }
     public double HomeworkGrade { get; set; }
     public double ExamGrade { get; set; }

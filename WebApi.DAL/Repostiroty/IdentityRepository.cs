@@ -12,6 +12,14 @@ namespace WebApi.DAL.Repostiroty
         public IdentityRepository(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor, IConfiguration config) : base(dbContext, httpContextAccessor, config)
         {
         }
+		public async Task<Student> GetStudentById(int id)
+		{
+			return await _dbContext.Students.FirstOrDefaultAsync(s => s.UserLoginId == id);
+		}
+        public async Task<Teacher> GetTeacherById(int id)
+        {
+            return await _dbContext.Teachers.FirstOrDefaultAsync(s => s.UserLoginId == id);
+        }
         public async Task<bool> IsAuthozi(int userLoginId, string? role = null)
 		{
 			UserLogin? UserLogin = await _dbContext.UserLogins
