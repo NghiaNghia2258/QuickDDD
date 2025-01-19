@@ -31,7 +31,8 @@ namespace WebAPI.Controllers
 				TokenLogin tokenLogin = new TokenLogin()
 				{
 					AccessToken = JwtTokenHelper.GenerateJwtToken(token,_configuration),
-					RefreshToken = JwtTokenHelper.GenerateJwtToken(token, _configuration)
+					RefreshToken = JwtTokenHelper.GenerateJwtToken(token, _configuration),
+					RoleGroupId = token.RoleGroupId
 				};
 				res = new ApiSuccessResult<TokenLogin>(tokenLogin);
 			}

@@ -45,6 +45,7 @@ public class IdentityServices : IAuthService, IAuthoziService
 			});
 		}
 		payloadToken.Roles = roles;
+		payloadToken.RoleGroupId = userlogin.RoleGroupId;
 		return payloadToken;
 	}
 

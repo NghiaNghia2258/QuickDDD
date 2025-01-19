@@ -11,6 +11,8 @@ namespace WebApi.DAL.Data
             var roles = new List<Role>
             {
                 new Role { Id = 1,Code = "CREATE_TEACHER", Name = "CREATE_TEACHER" },
+                new Role { Id = 2,Code = "RULE_STUDENT", Name = "RULE_STUDENT" },
+                new Role { Id = 3,Code = "RULE_TEACHER", Name = "RULE_TEACHER" },
             };
 
             modelBuilder.Entity<Role>().HasData(roles);
@@ -52,8 +54,8 @@ namespace WebApi.DAL.Data
                 .UsingEntity(j => j.HasData(
                     new { RoleGroupsId = 1, RolesId = 1 },
                     new { RoleGroupsId = 2, RolesId = 1 },
-                    new { RoleGroupsId = 3, RolesId = 1 }
-
+                    new { RoleGroupsId = 3, RolesId = 3 },
+                    new { RoleGroupsId = 4, RolesId = 2 }
                 ));
 
             var faculties = new List<Faculty>

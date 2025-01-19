@@ -29,6 +29,7 @@ public class Student: EntityBase<int>, IAuditableEntity
     public string? DeletedName { get; set; }
 
     public virtual ICollection<StudentFee> StudentFees { get; set; } = new List<StudentFee>();
+    public virtual ICollection<StudentGrade> StudentGrades { get; set; } = new List<StudentGrade>();
 
     public virtual UserLogin UserLogin { get; set; }
     public virtual ICollection<SchoolClassStudent> SchoolClasses { get; set; } = new List<SchoolClassStudent>();
