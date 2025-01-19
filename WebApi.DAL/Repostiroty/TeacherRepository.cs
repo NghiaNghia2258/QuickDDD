@@ -20,12 +20,11 @@ public class TeacherRepository : RepositoryBase<Teacher, int>, ITeacherRepositor
     }
     public async Task<IEnumerable<StudentGrade>> GetStudentGradeByClassIDAndSubjectId(int classId, int subjectId)
     {
-        var queryStudenInClass = _dbContext.Students
-            .Include(x => x.SchoolClasses.Where(y => y.SchoolClassesId == classId))
-            .Where(x => x.SchoolClasses.Any());
+        var queryStudenInClass = await _dbContext.Students
+            .Include(x => x.SchoolClasses.Where(y => y.SchoolClassesId == classId)).ToListAsync();
         var queryGradeSubject = _dbContext.StudentGrades.Where(x => x.SubjectId == subjectId);
 
-        var query = from student in queryStudenInClass
+        var query = from student in queryStudenInClass.Where(x => x.SchoolClasses.Count > 0)
                     join grade in queryGradeSubject
                     on student.Id equals grade.StudentId into studentGradeGroup
                     from grade in studentGradeGroup.DefaultIfEmpty() 
@@ -47,7 +46,7 @@ public class TeacherRepository : RepositoryBase<Teacher, int>, ITeacherRepositor
                         }
                     };
 
-        return await query.ToListAsync();
+        return query.ToList();
     }
     public async Task<int> GetOrdinalNumberOfCurrentYear()
     {

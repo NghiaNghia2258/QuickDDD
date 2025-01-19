@@ -4,6 +4,8 @@ public class StudentGradeDto
 {
     public int Id { get; set; }
     public int StudentId { get; set; }
+    public string? StudentCode { get; set; }
+    public string? StudentName { get; set; }
     public int SubjectId { get; set; }
     public double PracticalGrade { get; set; }
     public double HomeworkGrade { get; set; }
