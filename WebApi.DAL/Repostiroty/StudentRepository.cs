@@ -36,10 +36,11 @@ public class StudentRepository : RepositoryBase<Student, int>, IStudentRepositor
         );
         if(option.SchoolClassId != null)
         {
-            query = query.Include(x => x.SchoolClasses.Where(y => y.SchoolClassesId == option.SchoolClassId)).Where(x => x.SchoolClasses.Any());
+            query = query.Include(x => x.SchoolClasses.Where(y => y.SchoolClassesId == option.SchoolClassId)).Where(x => x.SchoolClasses.Count > 0);
         }
         TotalRecords.STUDENT = await query.CountAsync();
-        return await query.Skip(option.PageSize * (option.PageIndex - 1)).Take(option.PageSize).ToListAsync();
+        var res = await query.Skip(option.PageSize * (option.PageIndex - 1)).Take(option.PageSize).ToListAsync();
+        return res.Where(x => option.SchoolClassId == null || x.SchoolClasses.Count > 0).ToList();
     }
     public async Task<Student> GetById(int id)
     {
