@@ -22,6 +22,7 @@ public class UnitOfWork : IUnitOfWork
     private ISchoolClassRepository _schoolClassRepository;
     private IMajorRepository _majorRepository;
     private ISchoolClassesStudentRepository _schoolClassesStudentRepository;
+    private IStudentGradeRepository _studentGradeRepository;
 
     public ITeacherRepository Teacher => _teacherRepository ?? new TeacherRepository(_dbContext, _httpContextAccessor, _config);
     public IFacultyRepository Faculty => _facultyRepository ?? new FacultyRepository(_dbContext, _httpContextAccessor, _config);
@@ -30,6 +31,7 @@ public class UnitOfWork : IUnitOfWork
     public IStudentRepository Student => _studentRepository ?? new StudentRepository(_dbContext,_httpContextAccessor,_config);
     public ISchoolClassRepository SchoolClass => _schoolClassRepository ?? new SchoolClassRepository(_dbContext,_httpContextAccessor,_config);
     public IMajorRepository Major => _majorRepository ?? new MajorRepository(_dbContext,_httpContextAccessor,_config);
+    public IStudentGradeRepository StudentGrade => _studentGradeRepository ?? new StudentGradeRepository(_dbContext,_httpContextAccessor,_config);
     public ISchoolClassesStudentRepository SchoolClassesStudent => _schoolClassesStudentRepository ?? new SchoolClassesStudentRepository(_dbContext);
 
     public UnitOfWork(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor, IConfiguration config)

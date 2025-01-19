@@ -17,5 +17,10 @@ namespace WebApi.DAL.Repostiroty
              _appDbContext.SchoolClassStudent.Remove(schoolClassStudent);
              await _appDbContext.SaveChangesAsync();
         }
+        public async Task Create(SchoolClassStudent schoolClassStudent)
+        {
+            _appDbContext.SchoolClassStudent.Add(schoolClassStudent);
+            await _appDbContext.SaveChangesAsync();
+        }
     }
 }

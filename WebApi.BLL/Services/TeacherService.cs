@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using WebApi.BLL.Interfaces;
+using WebApi.BLL.Mapper.Students;
 using WebApi.BLL.Mapper.Teachers;
 using WebApi.BLL.ServicesBase;
 using WebApi.Domain.Abstractions;
 using WebApi.Domain.Const;
 using WebApi.Domain.Models;
 using WebApi.Domain.ParamsFilter;
-using WebApi.Shared.Mapper.Identity;
 
 namespace WebApi.BLL.Services;
 
@@ -14,6 +14,26 @@ public class TeacherService : ServiceBase, ITeacherService
 {
     public TeacherService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
     {
+    }
+    public async Task UpdateGradeForStudent(UpdateStudentGradeDto model)
+    {
+        StudentGrade studentGrade = await _unitOfWork.StudentGrade.GetByStudentIdAndSubjectId(model.StudentId,model.SubjectId);
+        if (studentGrade == null)
+        {
+            studentGrade = _mapper.Map<StudentGrade>(model);
+            await _unitOfWork.StudentGrade.Create(studentGrade);
+        }
+        else
+        {
+            StudentGrade mapstudentGrade = _mapper.Map<StudentGrade>(model);
+            mapstudentGrade.Id = studentGrade.Id;
+            await _unitOfWork.StudentGrade.Update(mapstudentGrade);
+        }
+    }
+    public async Task<IEnumerable<StudentGradeDto>> GetStudentGradeByClassIDAndSubjectId(int classId, int subjectId)
+    {
+        var data = await _unitOfWork.Teacher.GetStudentGradeByClassIDAndSubjectId(classId,subjectId);
+        return _mapper.Map<IEnumerable<StudentGradeDto>>(data);
     }
     public async Task<bool> Create(CreateTeacherDto model)
     {

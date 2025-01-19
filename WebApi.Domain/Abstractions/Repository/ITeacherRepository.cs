@@ -10,5 +10,6 @@ public interface ITeacherRepository
     Task<List<Teacher>> GetAll(OptionFilterTeacher option);
     Task<Teacher> GetById(int id);
     Task<int> GetOrdinalNumberOfCurrentYear();
+    Task<IEnumerable<StudentGrade>> GetStudentGradeByClassIDAndSubjectId(int classId, int subjectId);
     Task<bool> Update(Teacher teacher);
 }

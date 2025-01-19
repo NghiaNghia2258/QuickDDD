@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApi.BLL.Interfaces;
+using WebApi.BLL.Mapper.Students;
 using WebApi.BLL.Mapper.Teachers;
 using WebApi.Domain.ApiResult;
 using WebApi.Domain.Const;
@@ -63,6 +64,21 @@ namespace WebAPI.Controllers
             ApiResult res = new ApiSuccessResult();
             var data = await _teacherService.Update(model);
             res = new ApiSuccessResult<bool>(data);
+            return Ok(res);
+        }
+        [HttpGet("get-grade-by-classId-subjectId")]
+        public async Task<IActionResult> GetStudentGradeByClassIDAndSubjectId(int classId,int subjectId)
+        {
+            ApiResult res = new ApiSuccessResult();
+            var data = await _teacherService.GetStudentGradeByClassIDAndSubjectId(classId,subjectId);
+            res = new ApiSuccessResult<IEnumerable<StudentGradeDto>>(data);
+            return Ok(res);
+        }
+        [HttpPost("update-grade")]
+        public async Task<IActionResult> UpdateGradeForStudent(UpdateStudentGradeDto model)
+        {
+            ApiResult res = new ApiSuccessResult();
+            await _teacherService.UpdateGradeForStudent(model);
             return Ok(res);
         }
     }

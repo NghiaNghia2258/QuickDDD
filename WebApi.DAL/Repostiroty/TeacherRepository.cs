@@ -18,6 +18,37 @@ public class TeacherRepository : RepositoryBase<Teacher, int>, ITeacherRepositor
         await CreateAsync(model);
         return true;
     }
+    public async Task<IEnumerable<StudentGrade>> GetStudentGradeByClassIDAndSubjectId(int classId, int subjectId)
+    {
+        var queryStudenInClass = _dbContext.Students
+            .Include(x => x.SchoolClasses.Where(y => y.SchoolClassesId == classId))
+            .Where(x => x.SchoolClasses.Any());
+        var queryGradeSubject = _dbContext.StudentGrades.Where(x => x.SubjectId == subjectId);
+
+        var query = from student in queryStudenInClass
+                    join grade in queryGradeSubject
+                    on student.Id equals grade.StudentId into studentGradeGroup
+                    from grade in studentGradeGroup.DefaultIfEmpty() 
+                    select new StudentGrade
+                    {
+                        Id = grade == null ? 0 : grade.Id,
+                        StudentId = student.Id,
+                        SubjectId = subjectId,
+                        Version = grade == null ? 0 : grade.Version,
+                        PracticalGrade = grade == null ? 0 : grade.PracticalGrade,
+                        HomeworkGrade = grade == null ? 0 : grade.HomeworkGrade,
+                        ExamGrade = grade == null ? 0 : grade.ExamGrade,
+                        AttendanceGrade = grade == null ? 0 : grade.AttendanceGrade,
+                        Student = new Student()
+                        {
+                            Id = student.Id,
+                            FullName = student.FullName,
+                            Code = student.Code,
+                        }
+                    };
+
+        return await query.ToListAsync();
+    }
     public async Task<int> GetOrdinalNumberOfCurrentYear()
     {
         int ordinal = await _dbContext.Teachers.CountAsync(x => x.CreatedAt.Year == TimeConst.CurrentYear);
