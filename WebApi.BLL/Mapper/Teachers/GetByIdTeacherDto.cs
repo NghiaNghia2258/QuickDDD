@@ -1,4 +1,7 @@
-﻿namespace WebApi.BLL.Mapper.Teachers;
+﻿using WebApi.BLL.Mapper.SchoolClasses;
+using WebApi.BLL.Mapper.Subjects;
+
+namespace WebApi.BLL.Mapper.Teachers;
 
 public class GetByIdTeacherDto: GetAllTeacherDto
 {
@@ -14,4 +17,6 @@ public class GetByIdTeacherDto: GetAllTeacherDto
     public string? DeletedBy { get; set; }
     public string? DeletedName { get; set; }
     public int Version { get; set; }
+    public IEnumerable<GetAllSchoolClassDto> SchoolClasses { get; set; }
+    public IEnumerable<GetAllSubjectDto> Subjects { get; set; }
 }

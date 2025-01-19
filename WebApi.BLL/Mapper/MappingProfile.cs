@@ -19,7 +19,10 @@ public class MappingProfile : Profile
         CreateMap<Teacher,GetAllTeacherDto>();
         CreateMap<Teacher,GetByIdTeacherDto>().ReverseMap();
         CreateMap<Student,GetByIdStudentDto>().ReverseMap();
-        CreateMap<Student,GetAllStudentDto>();
+        CreateMap<Student,GetAllStudentDto>()
+            .ForMember(dest => dest.ClassCode , ost => ost.MapFrom(x => x.SchoolClasses.First().StudentClass.Code))
+            .ForMember(dest => dest.MajorName , ost => ost.MapFrom(x => x.SchoolClasses.First().StudentClass.Major.Name))
+            ;
         CreateMap<CreateStudentDto,Student>();
         CreateMap<Major,GetMajorsByFacultyIdDto>();
         CreateMap<UpdateStudentGradeDto, StudentGrade>()

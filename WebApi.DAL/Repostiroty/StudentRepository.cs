@@ -31,7 +31,11 @@ public class StudentRepository : RepositoryBase<Student, int>, IStudentRepositor
     }
     public async Task<List<Student>> GetAll(OptionFilterStudent option)
     {
-        var query = _dbContext.Students.Where(x =>
+        var query = _dbContext.Students
+            .Include(x => x.SchoolClasses)
+            .ThenInclude(x => x.StudentClass)
+            .ThenInclude(x => x.Major)
+            .Where(x =>
             (option.NameOrCode == null || (x.Code.Contains(option.NameOrCode) || x.FullName.Contains(option.NameOrCode)))
         );
         if(option.SchoolClassId != null)

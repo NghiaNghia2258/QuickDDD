@@ -5,6 +5,8 @@ public class GetAllStudentDto
     public int Id { get; set; }
     public string Code { get; set; }
     public string FullName { get; set; }
+    public string? ClassCode { get; set; }
+    public string? MajorName { get; set; }
     public string? Country { get; set; }
     public string? City { get; set; }
     public string? District { get; set; }
@@ -14,4 +16,5 @@ public class GetAllStudentDto
     public DateTime? DateOfBirth { get; set; }
     public int EnrollmentYear { get; set; }
     public int Status { get; set; }
+    public int version { get; set; }
 }

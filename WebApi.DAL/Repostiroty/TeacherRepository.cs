@@ -61,7 +61,9 @@ public class TeacherRepository : RepositoryBase<Teacher, int>, ITeacherRepositor
     }
     public async Task<Teacher> GetById(int id)
     {
-        return await _dbContext.Teachers.FirstOrDefaultAsync(x => x.Id == id);
+        return await _dbContext.Teachers
+            .Include(x => x.Subjects)
+            .Include(x => x.SchoolClasses).FirstOrDefaultAsync(x => x.Id == id);
     }
     public async Task<bool> Delete(int id)
     {
