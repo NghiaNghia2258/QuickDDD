@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using WebApi.BLL.Interfaces;
+using WebApi.BLL.Mapper.Userlogins;
 using WebApi.Domain.Abstractions.Repository.Identity;
 using WebApi.Domain.Models;
+using WebApi.Domain.ParamsFilter;
 using WebApi.Shared.Exceptions;
 using WebApi.Shared.Mapper.Identity;
 using WebApi.Shared.Models;
@@ -25,7 +27,24 @@ public class IdentityServices : IAuthService, IAuthoziService
         _config = config;
         _httpContextAccessor = httpContextAccessor;
     }
-
+	public async Task ChangePassword(ChangePassword model)
+	{
+		UserLogin us = await _authenRepository.GetById(model.Id);
+		us.Password = model.NewPass;
+		await _authenRepository.Update(us);
+	}
+	public async Task<List<UserloginDto>> Getall(OptionFilterUser option)
+	{
+		IEnumerable<UserLogin> userLogins = await _authenRepository.GetAll(option);
+		return userLogins.Select(x =>
+				new UserloginDto
+				{
+					Id = x.Id,
+					Username = x.Username,
+					RolegroupName = x.RoleGroup.Name
+				}
+			).ToList();
+	}
     public async Task<PayloadToken> SignIn(ParamasSignInRequest paramas)
 	{
 		UserLogin userlogin = await _authenRepository.SignIn(paramas);

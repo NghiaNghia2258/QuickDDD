@@ -5,6 +5,7 @@ using WebApi.BLL.Mapper.SchoolClasses;
 using WebApi.BLL.Mapper.Students;
 using WebApi.BLL.Mapper.Subjects;
 using WebApi.BLL.Mapper.Teachers;
+using WebApi.BLL.Mapper.Userlogins;
 using WebApi.Domain.Models;
 
 namespace WebApi.BLL.Mapper;
@@ -17,6 +18,9 @@ public class MappingProfile : Profile
         CreateMap<Subject,GetAllSubjectDto>();
         CreateMap<Faculty,GetAllFacultyDto>();
         CreateMap<Teacher,GetAllTeacherDto>();
+        CreateMap<UserLogin, UserloginDto>()
+             .ForMember(dest => dest.RolegroupName, ost => ost.MapFrom(x => x.RoleGroup.Name))
+            .ReverseMap();
         CreateMap<Teacher,GetByIdTeacherDto>().ReverseMap();
         CreateMap<Student,GetByIdStudentDto>().ReverseMap();
         CreateMap<Student,GetAllStudentDto>()
@@ -38,8 +42,9 @@ public class MappingProfile : Profile
             .ReverseMap();
         CreateMap<SchoolClass, GetByIdSchoolClassDto>()
             .ForMember(dest => dest.MajorName, ost => ost.MapFrom(x => x.Major.Name))
-            .ForMember(dest => dest.Teachers, ost => ost.MapFrom(x => x.SchoolClassTeacherSubject))
-            .ReverseMap();
+            .ForMember(dest => dest.Teachers, ost => ost.MapFrom(x => x.SchoolClassTeacherSubject));
+        CreateMap<GetByIdSchoolClassDto, SchoolClass>()
+            .ForMember(dest => dest.Teachers , ost => ost.Ignore());
         CreateMap<SchoolClass, GetAllSchoolClassDto>()
             .ForMember(dest => dest.MajorName, ost => ost.MapFrom(x => x.Major.Name))
             .ForMember(dest => dest.StudentCount, ost => ost.MapFrom(x => x.Students.Count))

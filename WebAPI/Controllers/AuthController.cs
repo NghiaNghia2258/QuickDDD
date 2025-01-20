@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApi.BLL.Interfaces;
+using WebApi.BLL.Mapper.Userlogins;
 using WebApi.Domain.ApiResult;
+using WebApi.Domain.ParamsFilter;
 using WebApi.Shared.Mapper.Identity;
 using WebApi.Shared.Models;
 using WebApi.Shared.Utilities;
@@ -21,8 +23,22 @@ namespace WebAPI.Controllers
 			_authoziService = authoziService;
 			_configuration = configuration;
 		}
-
-		[HttpPost("sign-in")]
+		[HttpGet("get-all")]
+        public async Task<IActionResult> GetAll([FromQuery] OptionFilterUser option)
+		{
+			ApiResult res = new ApiSuccessResult();
+			var data = await _authService.Getall(option);
+			res = new ApiSuccessResult<List<UserloginDto>>(data);
+			return Ok(res);
+		}
+		[HttpPost("change-pass")]
+        public async Task<IActionResult> GetAll(ChangePassword model)
+        {
+            ApiResult res = new ApiSuccessResult();
+            await _authService.ChangePassword(model);
+            return Ok(res);
+        }
+        [HttpPost("sign-in")]
 		public async Task<IActionResult> SignIn([FromBody] ParamasSignInRequest model)
 		{
 			ApiResult res = new ApiSuccessResult();

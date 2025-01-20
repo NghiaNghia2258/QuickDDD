@@ -37,11 +37,17 @@ namespace WebApi.DAL
             else { throw new VersionIsOldException(); }
             if (update is IUpdateTracking trackingEntity)
             {
-                PayloadToken payloadToken = JwtTokenHelper.GetPayloadToken(_httpContextAccessor.HttpContext, _config);
+                try
+                {
+                    PayloadToken payloadToken = JwtTokenHelper.GetPayloadToken(_httpContextAccessor.HttpContext, _config);
+                    trackingEntity.UpdatedAt = TimeConst.Now;
+                    trackingEntity.UpdatedBy = payloadToken.Username;
+                    trackingEntity.UpdatedName = payloadToken.FullName;
+                }
+                catch
+                {
 
-                trackingEntity.UpdatedAt = TimeConst.Now;
-                trackingEntity.UpdatedBy = payloadToken.Username;
-                trackingEntity.UpdatedName = payloadToken.FullName;
+                }
             }
             _dbContext.Entry(exist).CurrentValues.SetValues(update);
             await _dbContext.SaveChangesAsync();
