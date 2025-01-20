@@ -216,4 +216,15 @@ public class StudentService : ServiceBase, IStudentService
         IEnumerable<Student> students = await _unitOfWork.Student.GetAll(option);
         return _mapper.Map<IEnumerable<GetAllStudentDto>>(students);
     }
+    public async Task FeedBack(StudentFeedBackDto model)
+    {
+        StudentGrade grade = await _unitOfWork.StudentGrade.GetById(model.StudentGradeId);
+        if (grade != null)
+        {
+            StudentFeedback feedback = _mapper.Map<StudentFeedback>(model);
+            grade.StudentFeedbacks.Add(feedback);
+            await _unitOfWork.StudentGrade.Update(grade);
+        }
+
+    }
 }

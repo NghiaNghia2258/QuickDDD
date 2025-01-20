@@ -35,7 +35,7 @@ namespace WebApi.DAL
         public virtual DbSet<SchoolClass> SchoolClasses { get; set; }
         public virtual DbSet<Teacher> Teachers { get; set; }
         public virtual DbSet<SchoolClassStudent> SchoolClassStudent { get; set; }
-
+        public virtual DbSet<SchoolClassTeacherSubject> SchoolClassTeacherSubject { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=AppDb;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
 
@@ -95,6 +95,13 @@ namespace WebApi.DAL
                 entity.HasOne(e => e.StudentClass)
                       .WithMany(sc => sc.Students)
                       .HasForeignKey(e => e.SchoolClassesId);
+            });
+            modelBuilder.Entity<SchoolClassTeacherSubject>(entity =>
+            {
+                // Định nghĩa khóa chính
+                entity.HasKey(e => new { e.SchoolClassId, e.TeacherId, e.SubjectId });
+
+               
             });
             // Cấu hình mối quan hệ "1 giáo viên giảng dạy ở nhiều lớp" (many-to-many)
             modelBuilder.Entity<SchoolClass>()

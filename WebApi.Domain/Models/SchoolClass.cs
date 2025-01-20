@@ -30,5 +30,6 @@ public class SchoolClass: EntityBase<int>, IAuditableEntity
 
     // Mối quan hệ nhiều giáo viên giảng dạy nhiều lớp
     public virtual ICollection<Teacher> Teachers { get; set; } = new List<Teacher>();
+    public virtual ICollection<SchoolClassTeacherSubject> SchoolClassTeacherSubject { get; set; } = new List<SchoolClassTeacherSubject>();
 
 }

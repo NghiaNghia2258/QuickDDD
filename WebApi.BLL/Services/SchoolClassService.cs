@@ -64,4 +64,12 @@ public class SchoolClassService : ServiceBase, ISchoolClassService
         schoolClass.IsAvailableSlot = true;
         await _unitOfWork.SchoolClassesStudent.Delete(studentId, schoolClassId);
     }
+    public async Task AddTeachersToClass(AddTeachersToClassDto model)
+    {
+        SchoolClass schoolClass = await _unitOfWork.SchoolClass.GetById(model.SchoolClassId);
+        foreach (int teacherId in model.TeacherIds)
+        {
+            Teacher teacher = await _unitOfWork.Teacher.GetById(teacherId);
+        }
+    }
 }

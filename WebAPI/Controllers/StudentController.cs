@@ -91,4 +91,11 @@ public class StudentController : ControllerBase
         res = new ApiSuccessResult<IEnumerable<StudentGradeDto>>(data);
         return Ok(res);
     }
+    [HttpPost("feedback")]
+    public async Task<IActionResult> FeedBack([FromBody] StudentFeedBackDto model)
+    {
+        ApiResult res = new ApiSuccessResult();
+        await _studentService.FeedBack(model);
+        return Ok(res);
+    }
 }

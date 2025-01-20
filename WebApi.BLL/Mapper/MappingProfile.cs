@@ -25,6 +25,7 @@ public class MappingProfile : Profile
             ;
         CreateMap<CreateStudentDto,Student>();
         CreateMap<Major,GetMajorsByFacultyIdDto>();
+        CreateMap<StudentFeedback,StudentFeedBackDto>().ReverseMap();
         CreateMap<UpdateStudentGradeDto, StudentGrade>()
             .ForMember(dest => dest.Id, opt => opt.Ignore()); ;
         CreateMap<StudentGrade,StudentGradeDto>()
