@@ -20,8 +20,8 @@ public class MappingProfile : Profile
         CreateMap<Teacher,GetByIdTeacherDto>().ReverseMap();
         CreateMap<Student,GetByIdStudentDto>().ReverseMap();
         CreateMap<Student,GetAllStudentDto>()
-            .ForMember(dest => dest.ClassCode , ost => ost.MapFrom(x => x.SchoolClasses.First().StudentClass.Code))
-            .ForMember(dest => dest.MajorName , ost => ost.MapFrom(x => x.SchoolClasses.First().StudentClass.Major.Name))
+            .ForMember(dest => dest.ClassCode , ost => ost.MapFrom(x => x.SchoolClasses.Any() ? x.SchoolClasses.First().StudentClass.Code : ""))
+            .ForMember(dest => dest.MajorName , ost => ost.MapFrom(x => x.SchoolClasses.Any() ? x.SchoolClasses.First().StudentClass.Major.Name : ""))
             ;
         CreateMap<CreateStudentDto,Student>();
         CreateMap<Major,GetMajorsByFacultyIdDto>();
@@ -35,8 +35,9 @@ public class MappingProfile : Profile
         CreateMap<SchoolClass, GetByIdSchoolClassDto>().ForMember(
            dest => dest.MajorName, ost => ost.MapFrom(x => x.Major.Name)
             ).ReverseMap();
-        CreateMap<SchoolClass, GetAllSchoolClassDto>().ForMember(
-           dest => dest.MajorName, ost => ost.MapFrom(x => x.Major.Name)
-            );
+        CreateMap<SchoolClass, GetAllSchoolClassDto>()
+            .ForMember(dest => dest.MajorName, ost => ost.MapFrom(x => x.Major.Name))
+            .ForMember(dest => dest.StudentCount, ost => ost.MapFrom(x => x.Students.Count))
+            ;
     }
 }

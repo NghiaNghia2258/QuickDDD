@@ -41,6 +41,10 @@ public class SchoolClassService : ServiceBase, ISchoolClassService
         {
             return;
         }
+        if(schoolClass.AvailableSlots < model.StudentIds.Count())
+        {
+            throw new Exception("Không đủ slot");
+        }
         foreach (var item in model.StudentIds)
         {
             await _unitOfWork.SchoolClassesStudent.Create(new SchoolClassStudent()
@@ -48,10 +52,16 @@ public class SchoolClassService : ServiceBase, ISchoolClassService
                 StudentsId = item,
                 SchoolClassesId = schoolClass.Id
             });
+            schoolClass.AvailableSlots--;
+            schoolClass.IsAvailableSlot = schoolClass.AvailableSlots > 0;
         }
+        await _unitOfWork.SchoolClass.Update(schoolClass);
     }
     public async Task RemoveStudentFromClass(int studentId, int schoolClassId)
     {
+        SchoolClass schoolClass = await _unitOfWork.SchoolClass.GetById(studentId);
+        schoolClass.AvailableSlots++;
+        schoolClass.IsAvailableSlot = true;
         await _unitOfWork.SchoolClassesStudent.Delete(studentId, schoolClassId);
     }
 }

@@ -18,6 +18,14 @@ public class SubjectRepository : RepositoryBase<Subject, int>, ISubjectRepositor
     }
     public async Task<List<Subject>> GetAll(OptionFilterSubject option)
     {
-        return await FindAll().ToListAsync();
+        var data = await FindAll()
+            .Include(x => x.Teachers)
+            .Include(x => x.Majors)
+            .ThenInclude(x => x.SchoolClasses)
+            .Where(x => (option.FacultyId == null || x.Majors.Any(y => y.FacultyId == option.FacultyId))
+            && (option.ClassId == null || x.Majors.Any(y => y.SchoolClasses.Any(z => z.Id == option.ClassId)))
+            )
+            .ToListAsync();
+        return data;
     }
 }

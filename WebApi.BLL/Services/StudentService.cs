@@ -47,6 +47,9 @@ public class StudentService : ServiceBase, IStudentService
             Student = newStudent,
             StudentClass = schoolClassAvaiableSlot
         });
+        schoolClassAvaiableSlot.AvailableSlots--;
+        schoolClassAvaiableSlot.IsAvailableSlot = schoolClassAvaiableSlot.AvailableSlots > 0;
+        await _unitOfWork.SchoolClass.Update(schoolClassAvaiableSlot);
 
         RoleGroup roleStudent = await _unitOfWork.Identity.GetRoleGroupByCode("STUDENT");
 
