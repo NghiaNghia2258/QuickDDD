@@ -100,4 +100,9 @@ public class TeacherService : ServiceBase, ITeacherService
         IEnumerable<Teacher> teachers = await _unitOfWork.Teacher.GetBySubjectId(subjectId);
         return _mapper.Map<IEnumerable<GetAllTeacherDto>>(teachers);
     }
+    public async Task<IEnumerable<StudentFeedBackDto>> GetFeedback(OptionFilterFeedback option)
+    {
+        var data = await _unitOfWork.Teacher.GetFeedback(option);
+        return _mapper.Map<IEnumerable<StudentFeedBackDto>>(data);
+    }
 }

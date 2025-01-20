@@ -89,5 +89,13 @@ namespace WebAPI.Controllers
             res = new ApiSuccessResult<IEnumerable<GetAllTeacherDto>>(data);
             return Ok(res);
         }
+        [HttpGet("get-feedbacks")]
+        public async Task<IActionResult> GetFeedBack([FromQuery] OptionFilterFeedback option)
+        {
+            ApiResult res = new ApiSuccessResult();
+            var data = await _teacherService.GetFeedback(option);
+            res = new ApiSuccessResult<IEnumerable<StudentFeedBackDto>>(data);
+            return Ok(res);
+        }
     }
 }

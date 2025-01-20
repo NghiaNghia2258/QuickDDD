@@ -12,5 +12,6 @@ public class StudentGradeDto
     public double HomeworkGrade { get; set; }
     public double ExamGrade { get; set; }
     public double AttendanceGrade { get; set; }
+    public int? Status { get; set; }
     public int Version { get; set; }
 }

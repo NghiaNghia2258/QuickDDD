@@ -15,7 +15,7 @@ public class StudentRepository : RepositoryBase<Student, int>, IStudentRepositor
     }
     public async Task<IEnumerable<StudentGrade>> GetGradeById(int id)
     {
-        return await _dbContext.StudentGrades.Include(x => x.Subject).Where(x => x.StudentId == id).ToListAsync();
+        return await _dbContext.StudentGrades.Include(x => x.Subject).Include(x => x.StudentFeedbacks).Where(x => x.StudentId == id).ToListAsync();
     }
     public async Task<int> GetOrdinalNumberOfCurrentYear()
     {

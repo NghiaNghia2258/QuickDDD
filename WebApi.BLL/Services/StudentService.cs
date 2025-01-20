@@ -222,6 +222,7 @@ public class StudentService : ServiceBase, IStudentService
         if (grade != null)
         {
             StudentFeedback feedback = _mapper.Map<StudentFeedback>(model);
+            grade.UpdatedAt = DateTime.Now;
             grade.StudentFeedbacks.Add(feedback);
             await _unitOfWork.StudentGrade.Update(grade);
         }

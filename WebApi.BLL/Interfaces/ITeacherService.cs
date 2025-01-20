@@ -11,6 +11,7 @@ public interface ITeacherService
     Task<List<GetAllTeacherDto>> GetAll(OptionFilterTeacher option);
     Task<GetByIdTeacherDto> GetById(int id);
     Task<IEnumerable<GetAllTeacherDto>> GetBySubjectId(int subjectId);
+    Task<IEnumerable<StudentFeedBackDto>> GetFeedback(OptionFilterFeedback option);
     Task<IEnumerable<StudentGradeDto>> GetStudentGradeByClassIDAndSubjectId(int classId, int subjectId);
     Task<bool> Update(GetByIdTeacherDto model);
     Task UpdateGradeForStudent(UpdateStudentGradeDto model);

@@ -78,4 +78,26 @@ public class TeacherRepository : RepositoryBase<Teacher, int>, ITeacherRepositor
     {
         return await _dbContext.Teachers.Include(x => x.Subjects).Where(x => x.Subjects.Any(s => s.Id == subjectId)).ToArrayAsync();
     }
+    public async Task<IEnumerable<StudentFeedback>> GetFeedback(OptionFilterFeedback option)
+    {
+        var query = _dbContext.StudentFeedback
+            .Include(x => x.StudentGrade)
+            .ThenInclude(x => x.Student)
+            .ThenInclude(x => x.SchoolClasses)
+            .ThenInclude(x => x.StudentClass)
+            .ThenInclude(x => x.SchoolClassTeacherSubject)
+            .Where(x => 
+        (option.TeacherId == null || 
+            x.StudentGrade
+            .Student
+            .SchoolClasses
+            .Any(y => y.StudentClass.SchoolClassTeacherSubject
+            .Any(z => z.TeacherId == option.TeacherId)))
+        && (option.ClassId == null || x.StudentGrade
+            .Student
+            .SchoolClasses
+            .Any(y => y.SchoolClassesId == option.ClassId))
+        );
+        return await query.Skip(option.PageSize * (option.PageIndex - 1)).Take(option.PageSize).ToListAsync();
+    }
 }
