@@ -38,6 +38,7 @@ public class MappingProfile : Profile
         CreateMap<SchoolClass, GetAllSchoolClassDto>()
             .ForMember(dest => dest.MajorName, ost => ost.MapFrom(x => x.Major.Name))
             .ForMember(dest => dest.StudentCount, ost => ost.MapFrom(x => x.Students.Count))
+            .ForMember(dest => dest.HomeroomTeacherName, ost => ost.MapFrom(x => x.HomeroomTeacher == null ? "Chưa có" : x.HomeroomTeacher.FullName))
             ;
     }
 }

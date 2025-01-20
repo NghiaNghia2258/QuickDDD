@@ -17,6 +17,7 @@ public class SchoolClassRepository : RepositoryBase<SchoolClass, int>, ISchoolCl
     {
         var query = _dbContext.SchoolClasses
             .Include(x => x.Major)
+            .Include(x => x.HomeroomTeacher)
             .Include(x => x.Students)
             .ThenInclude(x => x.Student);
 
