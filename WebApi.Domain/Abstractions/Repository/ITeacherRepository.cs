@@ -9,6 +9,7 @@ public interface ITeacherRepository
     Task<bool> Delete(int id);
     Task<List<Teacher>> GetAll(OptionFilterTeacher option);
     Task<Teacher> GetById(int id);
+    Task<IEnumerable<Teacher>> GetBySubjectId(int subjectId);
     Task<int> GetOrdinalNumberOfCurrentYear();
     Task<IEnumerable<StudentGrade>> GetStudentGradeByClassIDAndSubjectId(int classId, int subjectId);
     Task<bool> Update(Teacher teacher);

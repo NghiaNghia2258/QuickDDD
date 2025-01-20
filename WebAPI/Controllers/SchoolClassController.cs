@@ -66,6 +66,13 @@ namespace WebAPI.Controllers
             await _schoolClassService.AddStudentsToClass(model);
             return Ok(res);
         }
+        [HttpPost("add-teacher-to-class")]
+        public async Task<IActionResult> AddTeachersToClass(AddTeachersToClassDto model)
+        {
+            ApiResult res = new ApiSuccessResult();
+            await _schoolClassService.AddTeachersToClass(model);
+            return Ok(res);
+        }
         [HttpDelete("remove-student-from-class")]
         public async Task<IActionResult> RemoveStudentFromClass(int studentId,int schoolClassId)
         {
@@ -73,5 +80,13 @@ namespace WebAPI.Controllers
             await _schoolClassService.RemoveStudentFromClass(studentId,schoolClassId);
             return Ok(res);
         }
+        [HttpDelete("remove-teacher-from-class")]
+        public async Task<IActionResult> RemoveTeacher(int schoolClassId, int teacherId, int subjectId)
+        {
+            ApiResult res = new ApiSuccessResult();
+            await _schoolClassService.RemoveTeacher(schoolClassId,teacherId,subjectId);
+            return Ok(res);
+        }
+        
     }
 }

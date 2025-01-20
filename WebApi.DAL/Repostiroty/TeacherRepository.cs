@@ -74,4 +74,8 @@ public class TeacherRepository : RepositoryBase<Teacher, int>, ITeacherRepositor
         await UpdateAsync(teacher);
         return true;
     }
+    public async Task<IEnumerable<Teacher>> GetBySubjectId(int subjectId)
+    {
+        return await _dbContext.Teachers.Include(x => x.Subjects).Where(x => x.Subjects.Any(s => s.Id == subjectId)).ToArrayAsync();
+    }
 }

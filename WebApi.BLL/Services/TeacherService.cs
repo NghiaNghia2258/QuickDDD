@@ -95,4 +95,9 @@ public class TeacherService : ServiceBase, ITeacherService
         await _unitOfWork.Teacher.Update(teacher);
         return true;
     }
+    public async Task<IEnumerable<GetAllTeacherDto>> GetBySubjectId(int subjectId)
+    {
+        IEnumerable<Teacher> teachers = await _unitOfWork.Teacher.GetBySubjectId(subjectId);
+        return _mapper.Map<IEnumerable<GetAllTeacherDto>>(teachers);
+    }
 }

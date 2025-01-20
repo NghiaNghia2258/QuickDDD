@@ -13,6 +13,12 @@ public class SchoolClassRepository : RepositoryBase<SchoolClass, int>, ISchoolCl
     public SchoolClassRepository(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor, IConfiguration config) : base(dbContext, httpContextAccessor, config)
     {
     }
+    public async Task RemoveeacherSubject (int schoolClassId, int teacherId, int subjectId)
+    {
+        SchoolClassTeacherSubject entity = await _dbContext.SchoolClassTeacherSubject.FirstOrDefaultAsync(x => x.SchoolClassId == schoolClassId && x.TeacherId == teacherId && x.SubjectId == subjectId);
+        _dbContext.SchoolClassTeacherSubject.Remove(entity);
+        await _dbContext.SaveChangesAsync();
+    }
     public async Task<List<SchoolClass>> GetAll(OptionFilterSchoolClass option)
     {
         var query = _dbContext.SchoolClasses
@@ -32,6 +38,7 @@ public class SchoolClassRepository : RepositoryBase<SchoolClass, int>, ISchoolCl
     {
         return await _dbContext.SchoolClasses
             .Include(x => x.Major)
+            .Include(x => x.SchoolClassTeacherSubject)
             .Include(x => x.Students)
             .ThenInclude(x => x.Student)
             .FirstOrDefaultAsync(x => x.Id == id);

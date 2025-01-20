@@ -67,9 +67,23 @@ public class SchoolClassService : ServiceBase, ISchoolClassService
     public async Task AddTeachersToClass(AddTeachersToClassDto model)
     {
         SchoolClass schoolClass = await _unitOfWork.SchoolClass.GetById(model.SchoolClassId);
-        foreach (int teacherId in model.TeacherIds)
+        foreach (var teacherDto in model.Teachers)
         {
-            Teacher teacher = await _unitOfWork.Teacher.GetById(teacherId);
+            if(schoolClass.SchoolClassTeacherSubject.Any(x => x.SubjectId == teacherDto.SubjectId))
+            {
+                throw new Exception("Đã có GV dạy môn này ");
+            }
+            schoolClass.UpdatedAt = DateTime.Now;
+            schoolClass.SchoolClassTeacherSubject.Add(new()
+            {
+                SubjectId = teacherDto.SubjectId,
+                TeacherId = teacherDto.TeacherId,
+            });
         }
+        await _unitOfWork.SchoolClass.Update(schoolClass);
+    }
+    public async Task RemoveTeacher(int schoolClassId, int teacherId, int subjectId)
+    {
+        await _unitOfWork.SchoolClass.RemoveeacherSubject(schoolClassId,teacherId,subjectId);
     }
 }

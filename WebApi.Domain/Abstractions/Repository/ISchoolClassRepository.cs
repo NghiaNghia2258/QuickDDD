@@ -10,5 +10,6 @@ public interface ISchoolClassRepository
     Task<List<SchoolClass>> GetAll(OptionFilterSchoolClass option);
     Task<SchoolClass> GetById(int id);
     Task<SchoolClass> GetOneClassesByMajorIdWithAvailableSlot(int majorId);
+    Task RemoveeacherSubject(int schoolClassId, int teacherId, int subjectId);
     Task<bool> Update(SchoolClass schoolClass);
 }

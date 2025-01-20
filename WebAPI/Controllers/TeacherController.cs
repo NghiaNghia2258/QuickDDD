@@ -81,5 +81,13 @@ namespace WebAPI.Controllers
             await _teacherService.UpdateGradeForStudent(model);
             return Ok(res);
         }
+        [HttpGet("get-by-subjectId")]
+        public async Task<IActionResult> GetBySubjectId(int subjectId)
+        {
+            ApiResult res = new ApiSuccessResult();
+            var data = await _teacherService.GetBySubjectId(subjectId);
+            res = new ApiSuccessResult<IEnumerable<GetAllTeacherDto>>(data);
+            return Ok(res);
+        }
     }
 }
